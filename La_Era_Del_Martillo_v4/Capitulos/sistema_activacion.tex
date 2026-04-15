@@ -1,0 +1,135 @@
+% --- ARCHIVO: Capitulos/sistema_activacion.tex ---
+
+\chapter{Estructura del Turno}
+
+\begin{loreblock}
+``La duda es el primer paso hacia la derrota. Actúa, reacciona, agótate — pero nunca te paralices.''
+\end{loreblock}
+
+\vspace{0.4cm}
+
+\section{La Ronda}
+
+Una partida de \textit{La Era del Martillo} se desarrolla en una serie de \textbf{Rondas}. Cada ronda representa un breve pero intenso intercambio de maniobras y golpes. Una ronda se divide en tres fases:
+
+\begin{enumerate}
+    \item \textbf{Fase de Inicio:} Se entregan fichas de turno, se gestionan misiones secundarias.
+    \item \textbf{Fase de Activación:} Los jugadores activan unidades de forma alternada.
+    \item \textbf{Fase de Final de Ronda:} Se resuelven efectos continuos, venenos, mantenimientos y se verifica si alguna misión fue completada.
+\end{enumerate}
+
+\section{Fase de Inicio}
+
+Al comienzo de cada ronda:
+
+\begin{reglaespecial}{Acciones de Inicio de Ronda}
+\begin{itemize}
+    \item Cada unidad recibe \textbf{1 Ficha de Turno} (puede ser un dado puesto en "1" o un marcador).
+    \item Cada jugador que tenga menos de 2 cartas de misión secundaria \textbf{roba hasta completar 2}.
+    \item Cada jugador puede, \textbf{una vez por ronda}, descartar 1 carta de misión secundaria y robar 1 nueva.
+    \item Se resuelven efectos del tipo \textbf{``Al comienzo de cada ronda...''} (como venenos o mantenimientos mágicos).
+\end{itemize}
+\end{reglaespecial}
+
+\section{Fase de Activación: Activación Alternada}
+
+El corazón del juego. En lugar de mover todo el ejército de una vez, los jugadores se alternan unidad por unidad.
+
+\begin{reglaespecial}{El Estado de Agotamiento}
+\begin{itemize}
+    \item Cuando un jugador activa una unidad, esta \textbf{consume su Ficha de Turno}.
+    \item La unidad realiza todas sus acciones y reacciones disponibles.
+    \item Al terminar, la unidad entra en estado \textbf{AGOTADO} y \textbf{no puede ser activada de nuevo} en esta ronda.
+    \item Una unidad Agotada \textbf{aún puede realizar Reacciones} (con ciertas limitaciones — ver sección de Reacciones).
+    \item Cuando todos las unidades de ambos jugadores estén agotadas, la Fase de Activación termina.
+\end{itemize}
+\end{reglaespecial}
+
+\begin{imagebox}{Diagrama del flujo de activación alternada — Jugador A activa, Jugador B activa, se repite}
+    \vspace{2.5cm}
+\end{imagebox}
+
+\section{Recursos de Unidad: PA y PE}
+
+\subsection{Puntos de Acción (PA)}
+
+Los \textbf{PA} representan el esfuerzo físico de la unidad en su turno. Cada unidad tiene un valor base de PA indicado en su ficha. Se gastan en acciones ofensivas, defensivas e interacciones. A continuación, la tabla completa de acciones disponibles y su costo:
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\linewidth}{|l|c|X|}
+\hline
+\rowcolor{GoldRule!25} \textbf{Acción} & \textbf{PA} & \textbf{Descripción} \\ \hline
+\textbf{Mover} & 1 & Desplazarse hasta su valor de MOV en cm. \\ \hline
+\textbf{Atacar (Melee)} & 1 & Realizar un ataque cuerpo a cuerpo. \\ \hline
+\textbf{Atacar (Rango)} & 1 & Realizar un ataque a distancia (dentro del rango del arma). \\ \hline
+\textbf{Placaje} & 1 & Mover o derribar a una unidad enemiga adyacente. \\ \hline
+\textbf{Asistir} & 1 & Otorga +2 a la siguiente tirada de un aliado cercano. \\ \hline
+\textbf{Interactuar / Robar} & 1 & Tomar la Gema, usar objetos, activar puntos de control. \\ \hline
+\textbf{Bloquear} (Reacción Melee) & 1 & Tirada defensiva con Bloqueo al recibir un ataque Melee. \\ \hline
+\textbf{Esquivar} (Reacción Rango) & 1 & Tirada defensiva con Reflejos al recibir un ataque a Distancia. \\ \hline
+\textbf{Otras Reacciones} & 1--3 & Hechizo Rápido, Contraataque, Movimiento de Respuesta. El costo exacto lo indica la habilidad o la situación (ver sección Reacciones). \\ \hline
+\end{tabularx}
+\caption{Acciones Básicas y su Costo en PA}
+\end{table}
+
+\begin{tcolorbox}[colback=GoldRule!10, colframe=GoldRule, title=\textbf{IMPORTANTE: Bloquear y Esquivar}]
+\small
+\textbf{Bloquear} se usa para defenderse de ataques \textbf{Melee}. \\
+\textbf{Esquivar} se usa para defenderse de ataques a \textbf{Distancia (Rango)}. \\
+Ambas son Reacciones que cuestan \textbf{1 PA} del total disponible de la unidad en esa ronda — no del turno activo del atacante. Si no le quedan PA, no puede defenderse activamente.
+\end{tcolorbox}
+
+\subsection{Puntos de Energía (PE)}
+
+Los \textbf{PE} representan la energía mágica o sobrenatural de la unidad. Cada unidad tiene un valor de PE indicado en su ficha, que se recupera al inicio de cada ronda. Se usan para activar habilidades mágicas, conjuros y técnicas especiales.
+
+El funcionamiento del gasto de PE depende del \textbf{Vínculo con la Gema}:
+
+\begin{reglaespecial}{Las Dos Fuentes de PE}
+\begin{itemize}
+    \item \textbf{Con Vínculo a la Gema activo:} La unidad gasta sus propios PE normalmente. Como está conectada al flujo de energía de la Gema, \textbf{no consume energía del entorno}. El terreno permanece intacto.
+
+    \item \textbf{Sin Vínculo a la Gema:} La unidad también gasta sus propios PE, pero al hacerlo extrae energía directamente del entorno. Esto crea una \textbf{Zona Seca} en el mapa, de forma permanente, en el punto donde se encontraba la unidad al momento del casteo. (Ver Capítulo~\ref{cap:gema} para reglas completas de Zonas Secas.)
+\end{itemize}
+\end{reglaespecial}
+
+En otras palabras: los PE de una unidad son siempre los suyos propios. La diferencia es \textit{de dónde} viene la energía que los recarga — de la Gema (sin costo al entorno) o del suelo (con costo al entorno).
+
+\section{Acciones Especiales}
+
+\subsection*{Reacciones}
+
+Las Reacciones permiten que una unidad actúe \textbf{fuera de su turno} en respuesta a una acción enemiga. Se pagan con PA del total disponible de la unidad para esa ronda. El costo varía según el tipo de reacción:
+
+\begin{reglaespecial}{Tipos de Reacción y su Costo en PA}
+\begin{itemize}
+    \item \textbf{Bloquear (1 PA):} Tirada defensiva con \textbf{Bloqueo} al recibir un ataque \textbf{Melee}.
+    \item \textbf{Esquivar (1 PA):} Tirada defensiva con \textbf{Reflejos} al recibir un ataque a \textbf{Distancia}.
+    \item \textbf{Hechizo Rápido (1--2 PA):} Conjuros con etiqueta ``Reacción''. El costo en PA está indicado en la carta del hechizo.
+    \item \textbf{Contraataque a Distancia (2 PA):} Disparo inmediato al recibir un ataque, si la unidad tiene arma de rango y no está en combate cuerpo a cuerpo.
+    \item \textbf{Movimiento de Respuesta (2--3 PA):} Desplazarse hasta MOV/2 en respuesta a que un enemigo se acerque o tome posición de amenaza. Las habilidades especiales de movimiento que se activen como respuesta pueden costar hasta 3 PA.
+\end{itemize}
+\end{reglaespecial}
+
+Una unidad \textbf{Agotada} solo puede realizar \textbf{1 Reacción} por ronda, y únicamente del tipo \textit{Bloquear} o \textit{Esquivar} (ambas cuestan 1 PA que se descuenta de su reserva de la siguiente ronda).
+
+\subsection*{Placaje}
+
+El Placaje es un intento de mover o derribar a una unidad enemiga adyacente. Se resuelve como una tirada enfrentada de \textbf{Melee ATK vs. Reflejos}. Si el atacante gana:
+
+\begin{itemize}
+    \item Puede \textbf{empujar} a la unidad hasta 5cm en una dirección.
+    \item O puede \textbf{derribarla} (estado: Derribado — la unidad gasta 1 PA adicional para levantarse).
+\end{itemize}
+
+\section{Fase de Final de Ronda}
+
+Una vez que todas las unidades están Agotadas:
+
+\begin{itemize}
+    \item Se resuelven efectos de \textbf{mantenimiento} (conjuros con duración, venenos, estados continuos).
+    \item Se verifica si alguna \textbf{Misión Principal o Secundaria} fue completada en esta ronda.
+    \item Las Misiones Secundarias completadas se \textbf{revelan y descartan}, anotando los Puntos de Victoria.
+    \item Se retiran las Fichas de Turno. Comienza la siguiente ronda.
+\end{itemize}

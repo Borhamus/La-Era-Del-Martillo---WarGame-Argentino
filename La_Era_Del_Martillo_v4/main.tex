@@ -1,0 +1,130 @@
+\documentclass[11pt,twoside,openany]{book}
+
+% --- PAQUETES DE IDIOMA Y FORMATO ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+
+% --- PAQUETES DE DISEÑO ---
+\usepackage{geometry}
+\geometry{top=2.2cm, bottom=2.2cm, left=2cm, right=2cm, headheight=14pt}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{tikz}
+
+% --- PAQUETES DE MATEMÁTICAS Y TABLAS ---
+\usepackage{amsmath, amssymb}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{colortbl}
+
+% --- DEFINICIÓN DE COLORES TEMÁTICOS ---
+\definecolor{HammerRed}{HTML}{8E0B0B}
+\definecolor{GoldRule}{HTML}{D4AF37}
+\definecolor{DeepBlack}{HTML}{1A1A1A}
+\definecolor{StoneDark}{HTML}{2C2C2C}
+\definecolor{ParchmentLight}{HTML}{F5F0E8}
+\definecolor{IronGray}{HTML}{6B6B6B}
+\definecolor{VoidPurple}{HTML}{3D0075}
+
+% --- CONFIGURACIÓN DE TÍTULOS ---
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{HammerRed}}
+  {\chaptertitlename\ \thechapter}{10pt}{\Huge}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{StoneDark}}
+  {\thesection}{1em}{}[\titlerule]
+
+% --- CAJA: REGLA ESPECIAL ESTILO 40K ---
+\newtcolorbox{reglaespecial}[1]{
+    colback=ParchmentLight,
+    colframe=HammerRed,
+    fonttitle=\bfseries\color{white},
+    title=#1,
+    enhanced,
+    attach boxed title to top left={xshift=3mm, yshift=-2mm},
+    boxed title style={colback=HammerRed},
+    breakable
+}
+
+% --- CAJA: EJEMPLO DE JUEGO ---
+\newtcolorbox{ejemplo}[1]{
+    colback=gray!8,
+    colframe=GoldRule,
+    fonttitle=\bfseries\color{DeepBlack},
+    title=#1,
+    enhanced,
+    attach boxed title to top left={xshift=3mm, yshift=-2mm},
+    boxed title style={colback=GoldRule},
+    breakable
+}
+
+% --- CAJA: LORE / CITA ---
+\newtcolorbox{loreblock}{
+    colback=DeepBlack!90,
+    colframe=GoldRule,
+    coltext=white,
+    fontupper=\itshape,
+    left=8pt, right=8pt,
+    enhanced,
+    breakable
+}
+
+% --- CAJA: PLACEHOLDER DE IMAGEN ---
+\newtcolorbox{imagebox}[1]{
+    colback=gray!15,
+    colframe=IronGray,
+    fonttitle=\bfseries\small\color{IronGray},
+    title={$\square$ ILUSTRACIÓN: #1},
+    halign=center,
+    valign=center,
+    enhanced
+}
+
+% --- COMANDO PARA STATS ---
+\newcommand{\stats}[6]{
+    \begin{center}
+    \begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+    \hline
+    \rowcolor{HammerRed!20} \textbf{MOV} & \textbf{MELEE} & \textbf{RANGO} & \textbf{REF} & \textbf{BLOQ} & \textbf{FOCUS} \\ \hline
+    #1 & #2 & #3 & #4 & #5 & #6 \\ \hline
+    \end{tabularx}
+    \end{center}
+}
+
+% --- INICIO DEL DOCUMENTO ---
+\begin{document}
+
+\input{caratula.tex}
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE,LO]{\textsc{La Era del Martillo} — Reglas Centrales}
+\fancyfoot[C]{\textit{``La tierra grita cuando el Martillo calla.''}}
+
+\columnsep=0.8cm
+\begin{multicols*}{2}
+
+\input{Capitulos/introduccion.tex}
+\input{Capitulos/elementos.tex}
+\input{Capitulos/posicionamiento.tex}
+\input{Capitulos/sistema_activacion.tex}
+\input{Capitulos/combate.tex}
+\input{Capitulos/magia_gema.tex}
+\input{Capitulos/composicion_party.tex}
+
+\end{multicols*}
+
+\end{document}

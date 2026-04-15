@@ -1,0 +1,220 @@
+% --- ARCHIVO: Capitulos/combate.tex ---
+
+\chapter{El Arte de la Guerra}
+
+\begin{loreblock}
+``No es el arma, es la mano que la sostiene. No es la mano, es la voluntad detrás.''
+\end{loreblock}
+
+\vspace{0.4cm}
+
+\section{El Pool de Ataque}
+
+Cuando una unidad declara un ataque \textbf{Melee} o \textbf{Rango}, se lanza un \textit{pool} de tres dados simultáneamente. Hacerlo al mismo tiempo acelera el juego.
+
+\begin{reglaespecial}{La Tirada de Triple Dado}
+\begin{itemize}
+    \item \textbf{1d12 (Éxito):} Determina si el ataque impacta. Se suma al atributo atacante y se enfrenta a la defensa del objetivo.
+    \item \textbf{1d100 (Localización):} Determina en qué parte del cuerpo impacta el golpe, \textit{solo si el ataque tuvo éxito}.
+    \item \textbf{1d6 (Efecto/Estado):} Si el ataque aplica un estado negativo (sangrado, veneno, etc.), este dado determina la potencia del estado.
+\end{itemize}
+\end{reglaespecial}
+
+\section{Atributos Principales (Escala 1--6)}
+
+Todos los atributos tienen un valor base entre \textbf{+1 y +6}. A este valor se suman \textbf{Modificadores} de equipo, posición, habilidades y situaciones especiales. Los modificadores tienen un rango fijo:
+
+\begin{tcolorbox}[colback=HammerRed!8, colframe=HammerRed]
+\centering
+\large \textbf{Tirada Final = 1d12 + Atributo (1--6) + Modificadores (-4 a +4)}\\[4pt]
+\small Los modificadores totales nunca pueden superar \textbf{+4} ni bajar de \textbf{--4}, sin importar cuántos bonos o penalizadores se acumulen.\\
+Ningún valor de atributo puede quedar por debajo de \textbf{0}.
+\end{tcolorbox}
+
+\vspace{0.3cm}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{|l|X|}
+\hline
+\rowcolor{HammerRed!15} \textbf{Atributo} & \textbf{Uso en juego} \\ \hline
+\textbf{Melee ATK} & Precisión en combate cuerpo a cuerpo. \\ \hline
+\textbf{Range ATK} & Precisión con armas a distancia (el arma define rango, daño y efectos). \\ \hline
+\textbf{Reflejos} & Esquiva activa contra ataques a \textbf{Distancia}. Cuesta 1 PA como Reacción. \\ \hline
+\textbf{Bloqueo} & Defensa activa contra ataques \textbf{Melee}. Cuesta 1 PA como Reacción. \\ \hline
+\textbf{Focus} & Mantener o potenciar efectos mágicos y habilidades técnicas prolongadas. \\ \hline
+\textbf{Res. Física} & Bono a 1d6 contra estados físicos (sangrado, veneno, derribado). \\ \hline
+\textbf{Res. Mágica} & Bono a 1d6 contra estados mágicos (sueño, miedo, aturdimiento). \\ \hline
+\end{tabularx}
+\end{center}
+
+\section{Resolución Paso a Paso}
+
+\begin{reglaespecial}{Paso 1: Tirada de Éxito (Ataque vs. Defensa)}
+El atacante tira: \textbf{1d12 + Atributo de Ataque + Modificadores (--4 a +4)}
+
+El defensor puede gastar \textbf{1 PA} para hacer una \textbf{tirada de Salvación}:
+\begin{itemize}
+    \item Contra ataque \textbf{Melee}: el defensor usa \textbf{Bloqueo} → $1d12 + \text{Bloqueo} + \text{Modificadores}$
+    \item Contra ataque a \textbf{Distancia}: el defensor usa \textbf{Reflejos} → $1d12 + \text{Reflejos} + \text{Modificadores}$
+\end{itemize}
+
+Si el defensor \textbf{no tiene PA disponibles}, no puede tirar salvación — el ataque impacta automáticamente y solo resta la RD.\\[4pt]
+Si el resultado del \textbf{atacante} es \textbf{igual o mayor} al del defensor: \textbf{el ataque impacta}.
+\end{reglaespecial}
+
+\begin{reglaespecial}{Paso 2: Localización (1d100)}
+Si impacta, consulta la tabla. El resultado del dado ya fue tirado junto al pool inicial.
+\end{reglaespecial}
+
+\begin{reglaespecial}{Paso 3: Resolución del Estado Negativo (si aplica)}
+Si el ataque puede infligir un estado (sangrado, veneno, sueño, etc.):
+
+\textbf{Atacante:} 1d6 + Modificadores de Arma\\
+\textbf{Defensor:} 1d6 + Resistencia correspondiente (Física o Mágica)
+
+Si el atacante supera al defensor: \textbf{el estado se aplica}.
+\end{reglaespecial}
+
+\subsection*{Ejemplo Completo de Combate}
+
+\begin{ejemplo}{Ejemplo: Ataque Melee con posibilidad de Sangrado}
+\textbf{Jugador A} ataca con su unidad (Melee ATK +3, con modificador +1 por flanco). El objetivo del \textbf{Jugador B} tiene Bloqueo +2 y Modificador de Escudo +1.
+
+Jugador A tira simultáneamente:
+\begin{itemize}
+    \item \textbf{Éxito:} $1d12 + 3 + 1 = [6] + 4 = 10$
+    \item \textbf{Localización:} $1d100 = 48$
+    \item \textbf{Efecto (Sangrado):} $1d6 + 1 = [4] + 1 = 5$
+\end{itemize}
+Jugador B responde:
+\begin{itemize}
+    \item \textbf{Salvación:} $1d12 + 2 + 1 = [4] + 3 = 7$
+    \item \textbf{Resistencia Física:} $1d6 + 2 = [3] + 2 = 5$
+\end{itemize}
+\textbf{Resultado:}
+\begin{enumerate}
+    \item Ataque (10) $>$ Defensa (7): \textbf{Impacta}.
+    \item Localización 48 → \textbf{Cuerpo}.
+    \item Estado: Efecto (5) \textbf{no supera} Resistencia (5) → El sangrado no se aplica.
+    \item Daño: El arma hace 4 de daño. Cuerpo tiene RD 2. \textbf{2 PV de daño al Cuerpo}.
+\end{enumerate}
+\end{ejemplo}
+
+\section{Localización de Daño}
+
+Cuando un ataque impacta, el resultado del \textbf{1d100} (tirado junto al pool de ataque) indica la zona del cuerpo que recibe el daño. Cada zona tiene su propia reserva de PV y su propia RD — el daño se aplica \textit{solo} a esa zona.
+
+\begin{imagebox}{Diagrama de un personaje con las zonas de localización señaladas y sus rangos de 1d100 — Cuerpo (01-65), Piernas (66-80), Brazos (81-95), Cabeza (96-100)}
+    \vspace{3.5cm}
+\end{imagebox}
+
+\subsection*{¿Cómo fluye el daño?}
+
+El daño se aplica zona por zona, de abajo hacia arriba. Cuando una zona llega a 0 PV, el daño restante \textbf{no se transfiere} a la siguiente — pero la zona queda incapacitada. El orden de gravedad es:
+
+\begin{center}
+\large \textbf{Cuerpo $\leftarrow$ Piernas $\leftarrow$ Brazos $\leftarrow$ Cabeza}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{tabularx}{\linewidth}{|l|c|c|c|X|}
+\hline
+\rowcolor{HammerRed!20} \textbf{Zona} & \textbf{1d100} & \textbf{PV Máx.} & \textbf{RD Base} & \textbf{Efecto al llegar a 0 PV} \\ \hline
+\textbf{Cuerpo} & 01--65 & 10 & \_\_ & \textbf{UNIDAD ELIMINADA.} Cae en el tablero. \\ \hline
+\textbf{Piernas} & 66--80 & 6 & \_\_ & Movimiento reducido al 50\% permanentemente. \\ \hline
+\textbf{Brazos} & 81--95 & 6 & \_\_ & No puede usar armas. Solo puede lanzar hechizos. \\ \hline
+\textbf{Cabeza} & 96--100 & 4 & \_\_ & \textbf{Incapacitado.} Ver regla de Recuperación abajo. \\ \hline
+\end{tabularx}
+
+\vspace{0.3cm}
+
+\begin{tcolorbox}[colback=HammerRed!8, colframe=HammerRed]
+\centering
+\large \textbf{Daño Final = Daño del Arma -- RD de la Zona}\\[4pt]
+\small El arma determina el daño base y qué efectos o estados puede aplicar.\\
+La RD de cada zona la determinan las características de la unidad y su equipamiento.\\
+\textbf{Ningún valor puede bajar de 0.}
+\end{tcolorbox}
+
+\begin{reglaespecial}{Incapacitación por Zona}
+Cuando una zona llega exactamente a \textbf{0 PV}, su efecto se aplica de forma \textbf{permanente} por el resto de la partida:
+\begin{itemize}
+    \item \textbf{Cuerpo (0 PV):} La unidad es \textbf{eliminada}. Su miniatura cae en el tablero y permanece ahí.
+    \item \textbf{Piernas (0 PV):} El MOV se reduce \textbf{permanentemente al 50\%}. Redondea hacia arriba.
+    \item \textbf{Brazos (0 PV):} La unidad \textbf{no puede usar armas} (Melee ni Rango). Solo puede lanzar hechizos y usar habilidades que no requieran arma.
+    \item \textbf{Cabeza (0 PV):} La unidad queda \textbf{Incapacitada}. No puede activarse ni gastar PA. Ver regla de Recuperación a continuación.
+\end{itemize}
+\end{reglaespecial}
+
+\subsection*{Recuperación de la Incapacitación (Cabeza a 0 PV)}
+
+Una unidad con la Cabeza a 0 PV queda Incapacitada pero no eliminada. \textbf{Al inicio de cada ronda} (durante la Fase de Inicio), la unidad puede intentar recuperarse:
+
+\begin{reglaespecial}{Tirada de Recuperación}
+\begin{enumerate}
+    \item Tira \textbf{2d12 + 1d6} simultáneamente.
+    \item Observa el resultado del \textbf{1d6}:
+    \begin{itemize}
+        \item Si sale \textbf{1, 2 o 3:} Toma el resultado \textbf{más bajo} de los dos d12.
+        \item Si sale \textbf{4, 5 o 6:} Toma el resultado \textbf{más alto} de los dos d12.
+    \end{itemize}
+    \item Si el resultado final del d12 elegido es \textbf{8 o más}: la unidad se recupera con \textbf{1 PV en Cabeza} y puede activarse con normalidad ese turno — pero queda con el estado negativo \textbf{Fog Mental}.
+    \item Si el resultado es \textbf{7 o menos}: la unidad sigue Incapacitada y puede volver a intentarlo el próximo inicio de ronda.
+\end{enumerate}
+\end{reglaespecial}
+
+\begin{tcolorbox}[colback=GoldRule!10, colframe=GoldRule, title=\textbf{ESTADO: Fog Mental}]
+\small Una unidad que se recupera de la Incapacitación opera bajo \textbf{Fog Mental} hasta el final de la partida:
+\begin{itemize}
+    \item $-2$ a todas las tiradas de 1d12 (ataque y defensa).
+    \item No puede usar habilidades que requieran \textbf{Focus} mayor a 2.
+    \item Al inicio de cada ronda, tira 1d6: con \textbf{1 o 2}, pierde su activación ese turno (la confusión la domina).
+\end{itemize}
+\end{tcolorbox}
+
+\section{Las Armas}
+
+Las armas son el elemento central del combate. Cada arma en el juego define:
+
+\begin{itemize}
+    \item \textbf{Tipo:} Melee o Distancia (Rango).
+    \item \textbf{Rango:} En cm. Solo aplica para armas a distancia. Dentro de ese rango puede dispararse; fuera, no.
+    \item \textbf{Modificador de Ataque:} El bono adicional que aporta a la tirada de 1d12 de éxito (dentro del rango --4 a +4 de modificadores).
+    \item \textbf{Daño:} La cantidad de daño base que inflige si el ataque impacta (antes de restar RD).
+    \item \textbf{Efecto / Estado:} Qué estado negativo puede aplicar el arma si la tirada de efecto supera la resistencia del defensor (sangrado, veneno, enmarañado, etc.).
+\end{itemize}
+
+\begin{tcolorbox}[colback=HammerRed!8, colframe=HammerRed, title=\textbf{Regla: El Arma Define el Ataque}]
+\small El arma lo determina todo en el ataque: no solo el daño, sino el alcance, el modificador de precisión y qué estados puede infligir. Una unidad sin arma puede atacar en Melee (con sus puños, sin modificador y con daño mínimo), pero no puede atacar a distancia. Los detalles de cada arma están en el Codex de tu facción.
+\end{tcolorbox}
+
+\section{Estados Negativos}
+
+Los estados negativos son efectos que persisten entre rondas o durante un tiempo determinado. Se indica en cada habilidad cuándo expiran.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{|l|X|}
+\hline
+\rowcolor{GoldRule!20} \textbf{Estado} & \textbf{Efecto} \\ \hline
+\textbf{Sangrado} & Al inicio de cada ronda, pierde 1 PV de la zona afectada. \\ \hline
+\textbf{Envenenado} & Al inicio de cada ronda, pierde 1 PV de Cuerpo. Se apila hasta x4. \\ \hline
+\textbf{Derribado} & Gasta 1 PA extra para levantarse. Melee enemigo tiene +2 mientras esté en el suelo. \\ \hline
+\textbf{Enmarañado} & No puede moverse. $-1$ a CA, Reflejos y Bloqueo. Puede intentar liberarse con Resistencia Física. \\ \hline
+\textbf{Aturdido} & Pierde 1 PA en su próxima activación. \\ \hline
+\textbf{Dormido} & No puede activarse. Se despierta si recibe daño o al inicio de su turno con una tirada de Resistencia Mágica. \\ \hline
+\end{tabularx}
+\end{center}
+
+\section{Ataques de Distancia y Pérdida de Precisión}
+
+Los ataques de rango tienen penalizadores acumulativos según la distancia:
+
+\begin{itemize}
+    \item \textbf{Rango corto} (0--50\% del rango del arma): Sin penalizador.
+    \item \textbf{Rango medio} (50--75\%): $-1$ a la tirada de Éxito.
+    \item \textbf{Rango largo} (75--100\%): $-2$ a la tirada de Éxito.
+    \item \textbf{Fuera de rango:} No se puede disparar.
+\end{itemize}
+
+Cada arma puede tener sus propias penalizaciones específicas indicadas en su ficha.

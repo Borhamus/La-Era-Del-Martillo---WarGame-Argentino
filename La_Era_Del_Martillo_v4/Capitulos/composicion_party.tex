@@ -1,0 +1,111 @@
+% --- ARCHIVO: Capitulos/composicion_party.tex ---
+
+\chapter{Composición del Ejército}
+
+\begin{loreblock}
+``Sesenta puntos. Ese es tu mundo. Construye sabiamente, comandante — con ellos ganarás o perderás antes de que comience la batalla.''
+\end{loreblock}
+
+\vspace{0.4cm}
+
+\section{Formato Estándar: 60 Puntos}
+
+El único formato actualmente disponible es el \textbf{Estándar}. Cada jugador tiene \textbf{60 puntos} para construir su ejército (llamado \textit{lista}).
+
+\begin{reglaespecial}{Reglas de Construcción de Lista}
+\begin{itemize}
+    \item Solo pueden incluirse unidades de \textbf{una única facción}.
+    \item Debes consultar el \textbf{Codex de tu facción} para equipar a tus héroes con Equipo, Artefactos y Magias.
+    \item \textbf{No puedes superar los 60 puntos}, pero puedes presentar una lista de menos de 60 como válida.
+    \item Al armar tu lista, asigna el equipamiento antes de la partida. Los ítems no pueden cambiarse una vez que comienza.
+\end{itemize}
+\end{reglaespecial}
+
+\section{Espacios de Equipamiento por Unidad}
+
+Cada unidad tiene una serie de ranuras fijas de equipamiento. No todas las unidades pueden ocupar todas las ranuras — esto varía según la raza, clase y características propias de la unidad (indicadas en su ficha del Codex).
+
+\begin{tabularx}{\linewidth}{|l|X|}
+\hline
+\rowcolor{HammerRed!15} \textbf{Zona del Cuerpo} & \textbf{Ranuras Disponibles} \\ \hline
+\textbf{Cabeza} & Casco, Hombreras \\ \hline
+\textbf{Brazos} & Guantes, Mangas, Anillo 1, Anillo 2 \\ \hline
+\textbf{Piernas} & Pantalón, Calzado \\ \hline
+\textbf{Cuerpo} & Pechera, Cinturón, Collar \\ \hline
+\textbf{Armas} & 2×1 Mano / 1×2 Manos / 1 Mano + Adicional (artefacto u otra arma) \\ \hline
+\textbf{Spells} & 1 a 6 ranuras (según la unidad) \\ \hline
+\textbf{Gema} & Puede o no equipar una Gema (según la unidad) \\ \hline
+\textbf{Inventario} & 1 a 6 ranuras (según la unidad) \\ \hline
+\end{tabularx}
+
+\vspace{0.3cm}
+
+El \textbf{inventario} puede contener consumibles (pociones, pergaminos, ítems de uso único). Cada ítem consumible indica cuándo puede ser usado y qué acción requiere.
+
+\begin{imagebox}{Diagrama visual de las ranuras de equipamiento de una unidad — silueta con flechas señalando cada zona de equipo}
+    \vspace{3.5cm}
+\end{imagebox}
+
+\section{Tipos de Armadura}
+
+La armadura determina la Reducción de Daño (RD) base de la unidad. Existen tres categorías:
+
+\begin{reglaespecial}{Categorías de Armadura}
+\begin{itemize}
+    \item \textbf{Túnica (Ligera):} No otorga RD, pero proporciona bonificadores mágicos. Ideal para hechiceros.
+    \item \textbf{Armadura Mediana:} Proporciona RD moderada sin penalizar el movimiento. Ideal para guerreros ágiles y DPS.
+    \item \textbf{Armadura Pesada:} Máxima RD, pero \textbf{reduce el movimiento} del portador según la penalización indicada en la pieza. Ideal para tanques y unidades de primera línea.
+\end{itemize}
+\end{reglaespecial}
+
+\section{El Héroe: Unidad Líder}
+
+Cada ejército puede incluir un \textbf{Héroe} o \textbf{Líder}, que es la unidad más poderosa de la lista. El Líder:
+
+\begin{itemize}
+    \item Es el único que puede portar la \textbf{Gema} de la facción.
+    \item Tiene acceso a equipamiento exclusivo de alto nivel.
+    \item Tiene un costo en puntos significativamente mayor al de las unidades regulares.
+    \item Genera el \textbf{Área de Influencia} para distribución de PE.
+\end{itemize}
+
+\begin{tcolorbox}[colback=GoldRule!10, colframe=GoldRule, title=\textbf{REGLA: Elegido / Líder}]
+Si el Líder es eliminado, el Área de Influencia desaparece y ninguna unidad puede usar la Gema por el resto de la partida (a menos que otra unidad pueda robarla y activarla según las reglas de su facción).
+\end{tcolorbox}
+
+\section{La Ficha de Unidad}
+
+Cada unidad en juego tiene una ficha que resume sus estadísticas, equipamiento y habilidades. La ficha se divide en:
+
+\begin{itemize}
+    \item \textbf{Frente:} Estadísticas base, localización de vida, imagen de la unidad y equipamiento actual.
+    \item \textbf{Dorso:} Descripción completa de poderes, habilidades especiales y texto de lore.
+\end{itemize}
+
+\begin{imagebox}{Ejemplo de ficha de unidad completa (frente y dorso) — formato imprimible, tamaño carta o A4}
+    \vspace{4cm}
+\end{imagebox}
+
+\subsection*{Ficha Genérica de Unidad (Resumen)}
+
+\begin{tabularx}{\linewidth}{|l|c|X|}
+\hline
+\rowcolor{HammerRed!15} \textbf{Atributo} & \textbf{Valor} & \textbf{Descripción} \\ \hline
+\textbf{P. Acción} & 1/2/3/4 & Acciones posibles por ronda \\ \hline
+\textbf{P. Energía} & 1/2/3/4 & Casteos / habilidades mágicas por ronda \\ \hline
+\textbf{Robar} & +\_\_ & Bono a tirada de 1d12 para interactuar/robar \\ \hline
+\textbf{Focus} & +\_\_ & Bono para extender efectos/magia \\ \hline
+\textbf{Movimiento} & \_\_ cm & Distancia por cada 1 PA gastado \\ \hline
+\textbf{Melee ATK} & +\_\_ & Bono a tirada de 1d12 en Melee \\ \hline
+\textbf{Range ATK} & +\_\_ & Bono a tirada de 1d12 a Distancia \\ \hline
+\textbf{Reflejos} & +\_\_ & Dificultad para ser impactado (esquiva) \\ \hline
+\textbf{Bloqueo} & +\_\_ & Dificultad para ser impactado (defensa) \\ \hline
+\textbf{Res. Física} & +\_\_ & Bono a 1d6 contra estados físicos \\ \hline
+\textbf{Res. Mágica} & +\_\_ & Bono a 1d6 contra estados mágicos \\ \hline
+\end{tabularx}
+
+\vspace{0.4cm}
+
+\begin{reglaespecial}{Regla de Vínculo de Gema}
+En la ficha aparece el campo: \textbf{Vínculo Gema: [SÍ] [NO]}. Este marcador debe estar visible durante la partida e indica si la unidad tiene acceso activo a la energía de la Gema de su Líder.
+\end{reglaespecial}
