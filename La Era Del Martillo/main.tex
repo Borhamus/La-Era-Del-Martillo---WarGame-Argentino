@@ -1,0 +1,125 @@
+\documentclass[11pt,twoside,openany]{book} % "book" es mejor para manuales largos; "twoside" para formato libro.
+
+% --- PAQUETES DE IDIOMA Y FORMATO ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec} % Para personalizar títulos de capítulos estilo 40k
+
+% --- PAQUETES DE DISEÑO ---
+\usepackage{geometry}
+\geometry{top=2cm, bottom=2cm, left=2cm, right=2cm, headheight=14pt}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox} % Imprescindible para las reglas especiales
+\tcbuselibrary{skins, breakable}
+\usepackage{fancyhdr} % Para encabezados con el nombre del manual
+\usepackage{multicol} % Los manuales de 40k suelen ir a 2 columnas
+
+% --- PAQUETES DE MATEMÁTICAS Y TABLAS ---
+\usepackage{amsmath, amssymb}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+
+% --- LIBRERÍAS ADICIONALES PARA LA FICHA ---
+\tcbuselibrary{skins, hooks}
+
+% --- PLANTILLA DE HÉROE LEGENDARIO ---
+\newtcolorbox{HeroSheet}[2]{
+    enhanced,
+    colback=white,
+    colframe=DeepBlack,
+    fonttitle=\bfseries\Large,
+    title={#1 \hfill \small #2}, % Nombre del Héroe y Puntos/Rol
+    attach boxed title to top left={xshift=5mm, yshift=-3mm},
+    boxed title style={colback=WarhammerRed, sharp corners},
+    sharp corners,
+    drop shadow,
+    before skip=10pt,
+    after skip=10pt,
+    underlay={ % Línea decorativa roja lateral
+        \path[fill=WarhammerRed] ([xshift=1mm]frame.north west) -- ([xshift=2mm]frame.north west) -- ([xshift=2mm]frame.south west) -- ([xshift=1mm]frame.south west) -- cycle;
+    }
+}
+
+% Comandos internos para organizar la información dentro de la ficha
+\newcommand{\heroDescription}[1]{{\small\itshape #1}\par\medskip\hrule\medskip}
+\newcommand{\abilitiesHeader}{\paragraph{\color{WarhammerRed}HABILIDADES Y PODERES}}
+
+
+% --- DEFINICIÓN DE COLORES TEMÁTICOS ---
+\definecolor{WarhammerRed}{HTML}{8E0B0B}
+\definecolor{GoldRule}{HTML}{D4AF37}
+\definecolor{DeepBlack}{HTML}{1A1A1A}
+
+% --- CONFIGURACIÓN DE TÍTULOS (ESTILO D&D) ---
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{WarhammerRed}}
+  {\chaptertitlename\ \thechapter}{10pt}{\Huge}
+
+% --- COMANDO PARA REGLAS ESPECIALES (CAJA ESTILO WH40K) ---
+\definecolor{GrimRed}{HTML}{4A0000} % Rojo sangre oscuro
+\definecolor{LanzaGrey}{HTML}{2F2F2F} % Gris metal gastado
+
+% Modifica tu reglaespecial para que se vea más agresiva
+\newtcolorbox{reglaespecial}[1]{
+    colback=black!5, 
+    colframe=GrimRed,
+    fonttitle=\bfseries\color{white},
+    title=#1,
+    enhanced,
+    sharp corners, % Las esquinas afiladas dan sensación de peligro
+    borderline={0.5pt}{0pt}{GrimRed}
+}
+
+% --- COMANDO PARA DATASHEET (ESTILO ATRIBUTOS) ---
+\newcommand{\stats}[6]{
+    \begin{center}
+    \begin{tabularx}{\linewidth}{|X|X|X|X|X|X|}
+    \hline
+    \rowcolor{gray!20} \textbf{MOV} & \textbf{MELEE} & \textbf{RANGO} & \textbf{REF} & \textbf{BLOQ} & \textbf{FOCUS} \\ \hline
+    #1 & #2 & #3 & #4 & #5 & #6 \\ \hline
+    \end{tabularx}
+    \end{center}
+}
+
+% Estilo para Relatos de Héroes (Fluff)
+\newtcolorbox{relato}[1]{
+    colback=black!90, % Fondo casi negro
+    colframe=GoldRule, % Borde dorado
+    fonttitle=\bfseries\scshape,
+    colupper=white,
+    title=#1,
+    enhanced,
+    breakable,
+    fontupper=\itshape, % Texto en cursiva para narrativa
+    sharp corners
+}
+
+% --- INICIO DEL DOCUMENTO ---
+\begin{document}
+
+% 1. Carátula (La que ya tienes o una más artística)
+\input{caratula.tex}
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+\pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE,LO]{LA ERA DEL MARTILLO - REGLAS CENTRALES}
+
+% 2. Capítulos del Manual
+\columnsep=0.7cm
+\begin{multicols*}{2} % Activa las dos columnas estilo manual oficial
+
+\input{Capitulos/01.introduccion.tex}
+\input{Capitulos/02.sistema_activacion.tex}
+\input{Capitulos/03.combate}
+\input{Capitulos/04.magia_gema}
+
+\end{multicols*}
+
+\end{document}

@@ -1,0 +1,54 @@
+% --- ARCHIVO: Capitulos/combate.tex ---
+
+\chapter{El Arte de la Guerra}
+
+El combate en \textit{La Era del Martillo} no es un simple intercambio de golpes; es un proceso de precisión donde la posición, la fuerza y la suerte dictan quién sobrevive.
+
+\section{El Pool de Ataque}
+Cuando una unidad declara una acción de **Melee** o **Rango**, el jugador lanza tres tipos de dados simultáneamente. Este conjunto de dados define la totalidad del ataque:
+
+\begin{reglaespecial}{La Tirada de Triple Dado}
+Al atacar, lanza estos dados juntos:
+\begin{itemize}
+    \item \textbf{1d12 (Éxito):} Se suma al atributo y al modificador que corresponda para superar la defensa del enemigo (\textbf{Esquiva} o \textbf{Bloqueo)}.
+    \item \textbf{1d100 (Localización):} Determina en qué parte del cuerpo impacta el golpe.
+    \item \textbf{1d6 (Daño):} Define la potencia base del impacto.
+\end{itemize}
+\end{reglaespecial}
+
+\section{Resolución del Ataque}
+Para determinar si un ataque impacta, se realiza una tirada enfrentada:
+
+\begin{center}
+    \textit{Ataque (1d12 + Atributo + Modificador) vs. Defensa (1d12 + Atributo + Modificador)}
+\end{center}
+
+Si el resultado del atacante es igual o superior al del defensor, el golpe conecta. En ataques de **Rango**, el defensor utiliza su atributo de \textbf{REF (Reflejos)}, mientras que en **Melee** suele utilizarse \textbf{BLOQ (Bloqueo)}.
+
+\section{Localización y Daño}
+Si el ataque impacta, consulta el resultado del **1d100** en la siguiente tabla para determinar las consecuencias físicas. Cada zona tiene un efecto si el daño supera la Resistencia de Daño (RD) del objetivo.
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\linewidth}{|l|c|X|}
+\hline
+\rowcolor{WarhammerRed!20} \textbf{Zona} & \textbf{d100} & \textbf{Efecto Crítico} \\ \hline
+Cabeza & 01-10 & Daño x2. Posible aturdimiento. \\ \hline
+Torso  & 11-50 & Daño estándar. \\ \hline
+Brazos & 51-75 & El objetivo no puede usar armas en ese brazo. \\ \hline
+Piernas& 76-00 & El atributo de MOV se reduce a la mitad. \\ \hline
+\end{tabularx}
+\caption{Tabla de Localización de Daño}
+\end{table}
+
+\section{Resistencia y Reducción}
+El daño final que recibe una unidad se calcula restando su estadística de **RD (Resistencia de Daño)** al valor obtenido en el dado de daño ($1d6$) más los bonificadores de arma.
+
+\begin{tcolorbox}[colback=gray!10, colframe=black, title=Cálculo Final]
+\centering
+\textbf{Daño Resultante =\\ (1d6 + Bono Arma) - RD Enemiga}
+\end{tcolorbox}
+
+\begin{reglaespecial}{Incapacitación}
+Si una unidad pierde todos sus puntos de vida en una extremidad específica, esa extremidad queda inutilizada permanentemente por el resto de la batalla, aplicando los penalizadores de la tabla de localización de forma constante.
+\end{reglaespecial}

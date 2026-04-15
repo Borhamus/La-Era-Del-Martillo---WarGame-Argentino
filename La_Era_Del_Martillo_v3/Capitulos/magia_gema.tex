@@ -1,0 +1,108 @@
+% --- ARCHIVO: Capitulos/magia_gema.tex ---
+\label{cap:gema}
+
+\chapter{La Gema y la Magia del Entorno}
+
+\begin{loreblock}
+``La tierra tiene memoria. Cada vez que la drenamos para nuestros conjuros, ella recuerda. Y un día, dejará de responder.''
+\end{loreblock}
+
+\vspace{0.4cm}
+
+\section{El Origen de la Energía Mágica}
+
+En Keitros, la magia no es infinita. Es un recurso físico que fluye por el suelo, el aire y los cuerpos de agua. Existen tres fuentes de \textbf{Puntos de Energía (PE)} para las unidades:
+
+\begin{enumerate}
+    \item \textbf{Reserva Propia de la Unidad:} Indicada en la ficha. Se recupera al inicio de cada ronda.
+    \item \textbf{La Gema y el Área de Influencia:} El Líder portador de la Gema distribuye PE a sus aliados.
+    \item \textbf{Extracción Forzada del Entorno:} Usar PE del suelo crea Zonas Secas permanentes.
+\end{enumerate}
+
+\section{Control de Gema (Gem Control)}
+
+El \textbf{Control de Gema} es la capacidad de un Líder para canalizar la energía de la Gema Primordial de su facción. Este valor está indicado en la ficha del Héroe o Líder que porte la Gema.
+
+\begin{reglaespecial}{Reglas de la Gema}
+\begin{itemize}
+    \item Cada ronda, el portador de la Gema genera PE igual a su valor de \textbf{Control de Gema}.
+    \item Esta energía puede ser usada por el propio portador o \textbf{distribuida a aliados} dentro del Área de Influencia.
+    \item Los PE de la Gema \textbf{no se acumulan entre rondas}. Lo que no se usa al final de la ronda, se disipa.
+    \item Un portador puede gastar 1 PA para \textbf{Cargar} a una unidad aliada: esa unidad recibe PE que puede gastar durante toda la ronda, incluso fuera del Área de Influencia.
+\end{itemize}
+\end{reglaespecial}
+
+\begin{imagebox}{Diagrama del Área de Influencia — círculo alrededor del Líder con la Gema, aliados dentro del radio usando energía}
+    \vspace{3cm}
+\end{imagebox}
+
+\section{Área de Influencia}
+
+El \textbf{Área de Influencia} es el radio medido desde la peana del Líder en centímetros. Cada facción presenta esta mecánica de forma diferente, pero la base es la misma:
+
+\begin{itemize}
+    \item Las unidades aliadas \textbf{dentro del área} pueden usar los PE de la Gema como si fueran propios.
+    \item Las unidades \textbf{fuera del área} necesitan reserva propia o extraer del entorno.
+    \item Si el Líder es eliminado o la Gema es robada, el Área de Influencia desaparece inmediatamente.
+\end{itemize}
+
+\subsection*{La Gema como Objetivo Táctico}
+
+La Gema es un objetivo de gran importancia táctica. Puede ser robada mediante la acción \textbf{Interactuar} si la unidad que intenta robarla supera una tirada enfrentada de:
+
+\begin{center}
+\textit{Ladrón (1d12 + Robar) vs. Portador (1d12 + Focus)}
+\end{center}
+
+Si el robo tiene éxito, la unidad robadora se convierte en el nuevo portador.
+
+\section{El Vínculo con la Gema}
+
+En la ficha de cada unidad aparece el campo \textbf{Vínculo Gema: [SÍ] [NO]}.
+
+\begin{itemize}
+    \item \textbf{SÍ:} La unidad tiene un vínculo activo con la Gema de su Líder. Puede recibir PE del Área de Influencia.
+    \item \textbf{NO:} La unidad no tiene vínculo. Para usar PE, debe gastar de su reserva propia o extraer del entorno.
+\end{itemize}
+
+El marcador de vínculo en la ficha debe actualizarse si el portador de la Gema cambia.
+
+\section{Zonas Secas: El Costo de la Magia}
+
+Cuando una unidad usa PE del entorno (sin Gema ni reserva propia), el terreno bajo sus pies queda \textbf{agotado mágicamente} de forma permanente.
+
+\begin{reglaespecial}{Creación de una Zona Seca}
+\begin{enumerate}
+    \item Coloca un marcador de Zona Seca de \textbf{3cm de radio} centrado en la unidad que extrajo energía.
+    \item Cada habilidad especifica cuánta energía consume del terreno (si aplica).
+    \item \textbf{Efecto permanente:} Ninguna unidad puede extraer PE del entorno dentro de esa Zona Seca por el resto de la partida.
+    \item \textbf{Penalizador adicional:} Las unidades que terminen su movimiento en una Zona Seca sufren $-1$ a todas las tiradas hasta el final de la partida, esto se puede apilar hasta -4.
+\end{enumerate}
+\end{reglaespecial}
+
+\begin{imagebox}{Vista cenital del tablero con varias Zonas Secas marcadas — áreas grises/muertas que bloquean la extracción de magia}
+    \vspace{2.5cm}
+\end{imagebox}
+
+\section{Tipos de Habilidades Mágicas}
+
+Las habilidades que consumen PE se clasifican según su tiempo de activación:
+
+\begin{tabularx}{\linewidth}{|l|c|X|}
+\hline
+\rowcolor{GoldRule!20} \textbf{Tipo} & \textbf{Costo PA} & \textbf{Descripción} \\ \hline
+\textbf{Hechizo Rápido} & Reacción (2 PA) & Se activa fuera del turno propio en respuesta a algo. Etiqueta: ``Reacción''. \\ \hline
+\textbf{Hechizo Estándar} & 1 PA & Se activa durante la activación normal de la unidad. \\ \hline
+\textbf{Ritual} & 1 PA (turno completo) & Consume toda la acción del turno. Alto costo de PE. Puede requerir sacrificio de PV. \\ \hline
+\textbf{Aura} & Pasiva & Se mantiene activa siempre que el Líder tenga al menos 1 PE. Se indica con etiqueta ``Mantenimiento(X)''. \\ \hline
+\end{tabularx}
+
+\vspace{0.3cm}
+
+\subsection*{Mantenimiento de Conjuros}
+
+Los conjuros con etiqueta \textbf{Mantenimiento(X)} deben ser ``pagados'' al inicio de cada ronda durante la Fase de Inicio. Si no se paga el costo, el conjuro se disipa automáticamente.
+
+\begin{tcolorbox}[colback=HammerRed!8, colframe=HammerRed, title=\textbf{IMPORTANTE: La Magia no es Infinita}]
+\small El planeta Keitros tiene una reserva mágica limitada. El uso indiscriminado de magia pone en riesgo el ecosistema. Esto se refleja mecánicamente en las Zonas Secas: cada zona drena el mapa de forma permanente, cambiando el campo de batalla para ambos jugadores.
+\end{tcolorbox}

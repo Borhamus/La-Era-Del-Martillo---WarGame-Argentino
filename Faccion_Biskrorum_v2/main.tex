@@ -1,0 +1,207 @@
+\documentclass[11pt,twoside,openany]{book}
+
+% --- 1. PAQUETES ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{top=2cm, bottom=2cm, left=1.5cm, right=1.5cm}
+
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, raster, listings}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{tikz}
+
+% --- 2. COLORES ---
+\definecolor{VoidBlack}{HTML}{0D0D0D}
+\definecolor{VoidPurple}{HTML}{3D0075}
+\definecolor{BloodPurple}{HTML}{660033}
+\definecolor{AbyssalBlue}{HTML}{0A1628}
+\definecolor{ChromeGray}{HTML}{8A8A9A}
+\definecolor{GoldRule}{HTML}{D4AF37}
+
+% --- 3. CONFIGURACIÓN DE TÍTULOS ---
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{VoidPurple}}
+  {\chaptertitlename\ \thechapter}{10pt}{\Huge}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{BloodPurple}}
+  {\thesection}{1em}{}[\titlerule]
+
+% --- 4. CAJAS DE ESTILO ---
+\newtcolorbox{reglabiskrida}[1]{
+    colback=AbyssalBlue!20,
+    colframe=VoidPurple,
+    fonttitle=\bfseries\color{white},
+    title=#1,
+    enhanced,
+    attach boxed title to top left={xshift=3mm, yshift=-2mm},
+    boxed title style={colback=VoidPurple},
+    breakable
+}
+
+\newtcolorbox{loreblock}{
+    colback=VoidBlack!90,
+    colframe=GoldRule,
+    coltext=white,
+    fontupper=\itshape,
+    left=8pt, right=8pt,
+    enhanced,
+    breakable
+}
+
+\newtcolorbox{imagebox}[1]{
+    colback=ChromeGray!15,
+    colframe=ChromeGray,
+    fonttitle=\bfseries\small\color{ChromeGray},
+    title={$\square$ ILUSTRACIÓN: #1},
+    halign=center,
+    valign=center,
+    enhanced
+}
+
+\newtcolorbox{pasivafaccion}{
+    colback=VoidPurple!10,
+    colframe=VoidPurple,
+    fonttitle=\bfseries\color{white},
+    title={PASIVA DE FACCIÓN: ENLACE NEURONAL},
+    enhanced,
+    breakable
+}
+
+% --- 5. COMANDO STATS ---
+\newcommand{\stats}[6]{%
+    \noindent
+    \begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+    \hline
+    \rowcolor{VoidPurple!30} \textbf{MOV} & \textbf{MELEE} & \textbf{RANGE} & \textbf{REF} & \textbf{BLOQ} & \textbf{FOCUS} \\ \hline
+    #1 & #2 & #3 & #4 & #5 & #6 \\ \hline
+    \end{tabularx}%
+}
+
+% --- 6. FICHA FRENTE ---
+\newcommand{\fichaFrente}[9]{%
+    \noindent
+    \begin{tcolorbox}[enhanced, width=\textwidth, height=13cm, colback=white, colframe=VoidBlack, sharp corners,
+        title={\Large \textbf{#1} \hfill \small Coste: \textbf{#2} pts \quad|\quad #3},
+        boxed title style={colback=VoidPurple, coltext=white}]
+
+        % STATS
+        \stats{#4}{#5}{#6}{#7}{#8}{#9}
+
+        \vspace{0.25cm}
+
+        % BLOQUE IMAGEN | VIDA
+        \begin{minipage}[t]{0.38\linewidth}
+            \vspace{0pt}
+            \begin{tcolorbox}[enhanced, height=5.8cm, colback=ChromeGray!10, colframe=VoidPurple!40,
+                title=\small REGISTRO VISUAL, boxed title style={colback=VoidBlack, coltext=white, size=small}, nobeforeafter]
+                \centering \vfill \textcolor{ChromeGray}{\small $\square$ [Ilustración\\ de unidad]} \vfill
+            \end{tcolorbox}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}[t]{0.59\linewidth}
+            \vspace{0pt}
+
+            % TABLA DE SALUD
+            \begin{tcolorbox}[colback=white, colframe=BloodPurple,
+                title=\small SALUD \& LOCALIZACIÓN (1d100), size=small, nobeforeafter]
+                \centering \footnotesize
+                \begin{tabularx}{\linewidth}{|l|c|c|c|}
+                \hline
+                \rowcolor{BloodPurple!15} \textbf{Zona} & \textbf{1d100} & \textbf{PV} & \textbf{RD} \\ \hline
+                Cuerpo & 01--65 & $\square\square\square\square\square\square\square\square\square\square$ & \_ \\ \hline
+                Piernas & 66--80 & $\square\square\square\square\square\square$ & \_ \\ \hline
+                Brazos  & 81--95 & $\square\square\square\square\square\square$ & \_ \\ \hline
+                Cabeza  & 96--100 & $\square\square\square\square$ & \_ \\ \hline
+                \end{tabularx}
+            \end{tcolorbox}
+
+            \vspace{0.2cm}
+
+            % FICHA PA/PE/MOVIMIENTO
+            \begin{tcolorbox}[colback=white, colframe=VoidPurple,
+                title=\small RECURSOS, size=small, nobeforeafter]
+                \footnotesize
+                \begin{tabularx}{\linewidth}{X|X|X|X}
+                \textbf{PA} & \textbf{PE} & \textbf{MOV} & \textbf{Vínculo Gema} \\
+                \hline
+                \_ & \_ & \_\,cm & {[SÍ]} {[NO]}
+                \end{tabularx}
+            \end{tcolorbox}
+
+            \vspace{0.2cm}
+
+            % PASIVA
+            \begin{tcolorbox}[colback=VoidPurple!8, colframe=VoidPurple,
+                title=\small HABILIDAD PASIVA, size=small, nobeforeafter]
+                \footnotesize Ver reverso $\rightarrow$
+            \end{tcolorbox}
+        \end{minipage}
+
+        \vfill
+
+        % EQUIPAMIENTO
+        \begin{tcolorbox}[colback=ChromeGray!8, colframe=VoidBlack,
+            title=\small MODIFICACIONES GENÉTICAS / EQUIPAMIENTO, size=small, nobeforeafter]
+            \footnotesize
+            \begin{tabularx}{\linewidth}{X|c|c}
+            \textbf{Ítem / Mutación Equipada} & \textbf{Efecto} & \textbf{Costo} \\ \hline
+            1. Arma Base \dotfill & \dotfill & -- \\ \hline
+            2. \dotfill & \dotfill & \dotfill \\ \hline
+            3. \dotfill & \dotfill & \dotfill \\
+            \end{tabularx}
+        \end{tcolorbox}
+
+    \end{tcolorbox}%
+}
+
+% --- 7. FICHA DORSO ---
+\newcommand{\fichaDorso}[3]{%
+    \noindent
+    \begin{tcolorbox}[enhanced, width=\textwidth, height=13cm, colback=AbyssalBlue!15,
+        colframe=VoidBlack, sharp corners,
+        title={\Large \textbf{#1} \hfill \small PODERES Y LORE},
+        boxed title style={colback=VoidBlack, coltext=white}]
+        %
+        \begin{multicols}{2}
+            \textbf{\color{VoidPurple}PODERES Y HABILIDADES}\\[4pt]
+            \begin{itemize}[leftmargin=*, noitemsep, topsep=2pt]
+                #2
+            \end{itemize}
+
+            \columnbreak
+
+            \textbf{\color{BloodPurple}LORE}\\[4pt]
+            \footnotesize \itshape #3
+        \end{multicols}
+
+        \vfill
+        \begin{center}
+            \footnotesize \color{ChromeGray}
+            \textit{Recorta por el borde negro. Esta cara va detrás del frente al imprimir.}
+        \end{center}
+    \end{tcolorbox}%
+}
+
+\begin{document}
+
+    \input{01.Lore.tex}
+    \newpage
+    \input{02.Unidades.tex}
+    \newpage
+    \input{03.Mercado.tex}
+    \newpage
+    \input{04.Cartas.tex}
+
+\end{document}

@@ -1,0 +1,77 @@
+% --- ARCHIVO: caratula.tex ---
+\begin{titlepage}
+    \centering
+    
+    % Fondo o Marco (Opcional: Si tienes una imagen de fondo, se descomenta lo siguiente)
+    % \begin{tikzpicture}[remember picture,overlay]
+    %     \node[anchor=center] at (current page.center) {\includegraphics[width=\paperwidth,height=\paperheight]{Imagenes/fondo_epico.jpg}};
+    % \end{tikzpicture}
+
+    % Espacio superior para que el título no quede pegado arriba
+    \vspace*{2cm}
+
+    % Línea decorativa superior estilo Manual
+    \noindent\makebox[\linewidth]{\rule{\textwidth}{2pt}} 
+    \vspace{0.4cm}
+
+    % TÍTULO PRINCIPAL
+    {\Huge \bfseries \color{WarhammerRed} LA ERA DEL MARTILLO \par}
+    
+    \vspace{0.2cm}
+    
+    % SUBTÍTULO O VERSIÓN
+    {\Large \scshape Guía Practica Para La Guerra \par}
+    
+    \vspace{0.4cm}
+    \noindent\makebox[\linewidth]{\rule{\textwidth}{2pt}}
+
+    \vspace{2cm}
+
+    % IMAGEN CENTRAL (Aquí iría el logo de tu juego o un arte conceptual)
+    % Si no tienes imagen aún, puedes dejar el espacio o usar un símbolo TikZ
+\begin{tikzpicture}
+    % Definición de Colores
+    % \definecolor{GoldRule}{HTML}{D4AF37}
+    % \definecolor{WarhammerRed}{HTML}{8E0B0B}
+    % \definecolor{DeepBlack}{HTML}{1A1A1A}
+
+    % 1. El Triángulo Invertido (La Punta de la Lanza)
+    \draw[line width=4pt, color=GoldRule, line join=round] (0,3.46) -- (4,3.46) -- (2,0) -- cycle;
+
+    % 2. El Gran Rayo Central (Canalización de Energía)
+    \fill[color=WarhammerRed] 
+        (1.2, 3.2)  -- (2.8, 3.2)   % Base superior
+        -- (2.2, 2.1)               % Quiebre
+        -- (2.6, 2.0)               % Saliente
+        -- (1.9, 0.6)               % Vértice inferior del rayo
+        -- (2.0, 1.6)               % Saliente
+        -- (1.4, 1.7)               % Quiebre
+        -- cycle;
+
+    % 3. El Martillo Negro Flat (Debajo de la punta)
+    % Dibujado de forma minimalista: mango y cabeza rectangular
+    \begin{scope}[shift={(2, -0.3)}] % Posicionamiento debajo de la punta
+        % Cabeza del Martillo
+        \fill[color=DeepBlack] (-0.8, -0.4) rectangle (0.8, 0.1); 
+        % Mango del Martillo
+        \fill[color=DeepBlack] (-0.15, -1.6) rectangle (0.15, -0.4);
+        % Detalle de pomo (opcional, para estilo)
+        \fill[color=DeepBlack] (-0.2, -1.7) rectangle (0.2, -1.6);
+    \end{scope}
+
+\end{tikzpicture}
+
+    \vfill
+
+    % SECCIÓN INFERIOR: AUTORÍA Y CRÉDITOS
+    \begin{tcolorbox}[colframe=WarhammerRed, colback=black!90, arc=0mm, width=0.8\textwidth]
+        \centering
+        {\color{white} \large \textbf{DISEÑADO POR:} \\ \scshape Franco Joaquín Gómez}
+    \end{tcolorbox}
+
+    \vspace{1cm}
+
+    % FECHA O VERSIÓN DEL DOCUMENTO
+    {\small \color{gray} Versión 0.0.1 - ''EL INICIO DE LA ERA'' \\ \the\year \par}
+
+\end{titlepage}

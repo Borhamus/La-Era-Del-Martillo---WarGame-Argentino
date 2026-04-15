@@ -1,0 +1,123 @@
+\documentclass[11pt,twoside,openany]{book}
+
+% --- 1. PAQUETES ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb} 
+\usepackage{geometry}
+\geometry{top=2cm, bottom=2cm, left=1.5cm, right=1.5cm} % Márgenes para centrado
+
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage{enumitem} 
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, raster, listings}
+
+% --- 2. COLORES ---
+\definecolor{VoidBlack}{HTML}{0D0D0D}
+\definecolor{VoidPurple}{HTML}{3D0075}
+\definecolor{BloodPurple}{HTML}{660033}
+
+% --- 3. COMANDO STATS (CENTRADOS Y A LO ANCHO) ---
+\newcommand{\stats}[6]{%
+    \noindent
+    % Usamos >{\centering\arraybackslash} para que los números queden en el centro de la celda
+    \begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+    \hline
+    \rowcolor{VoidPurple!30} \textbf{MOV} & \textbf{MELEE} & \textbf{RANGO} & \textbf{REF} & \textbf{BLOQ} & \textbf{FOCUS} \\ \hline
+    #1 & #2 & #3 & #4 & #5 & #6 \\ \hline
+    \end{tabularx}%
+}
+
+% --- 4. FICHA FRENTE (REDISEÑO CON DAÑO LOCALIZADO) ---
+\newcommand{\fichaFrente}[9]{%
+    \noindent
+    \begin{tcolorbox}[enhanced, width=\textwidth, height=12.5cm, colback=white, colframe=VoidBlack, sharp corners, 
+        title={\Large \textbf{#1} \hfill \small Coste: #2 pts | #3},
+        boxed title style={colback=VoidPurple}]
+        
+        % 1. ESTADÍSTICAS ARRIBA
+        \stats{#4}{#5}{#6}{#7}{#8}{#9}
+        
+        \vspace{0.3cm} % Separación
+        
+        % 2. BLOQUE DIVIDIDO (Imagen izq. | Vida y Pasiva der.)
+        \begin{minipage}[t]{0.35\linewidth} % Hice la imagen más angosta para dar espacio a la tabla
+            \vspace{0pt} 
+            \begin{tcolorbox}[enhanced, height=5.5cm, colback=gray!5, colframe=VoidPurple!30, 
+                title=REGISTRO VISUAL, boxed title style={colback=VoidBlack, size=small}, nobeforeafter]
+                \centering \vfill \textit{[Imagen]} \vfill
+            \end{tcolorbox}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}[t]{0.62\linewidth} % Más espacio para la tabla de vida
+            \vspace{0pt} 
+            
+            % NUEVA TABLA DE LOCALIZACIÓN BISKRORUM
+            \begin{tcolorbox}[colback=white, colframe=BloodPurple, title=SALUD Y LOCALIZACIÓN (1d100), size=small, nobeforeafter]
+                \centering
+                \footnotesize
+                \begin{tabularx}{\linewidth}{|l|c|X|c|}
+                \hline
+                \rowcolor{BloodPurple!10} \textbf{ZONA} & \textbf{1d100} & \textbf{PV (VIDA)} & \textbf{RD} \\ \hline
+                \textbf{Cuerpo} & 01 - 65 & $\square\square\square\square\square\square$ & -- \\ \hline
+                \textbf{Cerebro} & 66 - 100 & $\square\square\square\square$ & -- \\ \hline
+                \end{tabularx}
+            \end{tcolorbox}
+            
+            \vspace{0.2cm}
+            \begin{tcolorbox}[colback=white, colframe=VoidPurple, title=PASIVA ÚNICA, size=small, nobeforeafter]
+                \footnotesize \textbf{Gen\_#1:} Ver detalle al dorso $\rightarrow$
+            \end{tcolorbox}
+        \end{minipage}
+
+        \vfill % Empuja el equipamiento hacia el fondo
+
+        % 3. EQUIPAMIENTO ABAJO
+        \begin{tcolorbox}[colback=gray!5, colframe=VoidBlack, title=MODIFICACIONES GENÉTICAS / ITEMS, size=small, nobeforeafter]
+            \begin{tabularx}{\linewidth}{X|c|c}
+            \textbf{Gen o Item Equipado} & \textbf{Efecto} & \textbf{Costo} \\ \hline
+            1. Arma Base \dotfill & \dotfill & -- \\ \hline
+            2. \dotfill & \dotfill & \dotfill \\
+            \end{tabularx}
+        \end{tcolorbox}
+    \end{tcolorbox}%
+}
+
+% --- 5. FICHA DORSO (MILIMÉTRICA) ---
+\newcommand{\fichaDorso}[3]{%
+    \noindent
+    \begin{tcolorbox}[enhanced, width=\textwidth, height=12.5cm, colback=white, colframe=VoidBlack, sharp corners, 
+        title={\Large #1 \hfill \small RESUMEN DE DATOS},
+        boxed title style={colback=VoidBlack}]
+        %
+        \begin{multicols}{2}
+            \section*{Poderes}
+            \begin{itemize}[leftmargin=*, noitemsep]
+                #2
+            \end{itemize}
+            
+            \columnbreak
+            
+            \section*{Lore}
+            \footnotesize \textit{#3}
+        \end{multicols}
+        
+        \vfill
+        \begin{center}
+            \footnotesize \textit{Recorta por el borde negro. Esta cara queda detrás del frente al imprimir.}
+        \end{center}
+    \end{tcolorbox}%
+}
+
+\begin{document}
+    \input{01.Lore.tex}
+    \newpage
+    \input{02.Unidades.tex}
+    \newpage
+    \input{03.Mercado.tex}
+    \newpage
+    \input{04.Cartas.tex}
+\end{document}

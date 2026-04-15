@@ -1,0 +1,61 @@
+% --- ARCHIVO: Capitulos/sistema_activacion.tex ---
+
+\chapter{Estructura del Turno}
+
+El flujo de batalla en \textit{La Era del Martillo} se rige por el caos controlado de la guerra. No hay turnos de ejército completos; en su lugar, el combate es un toma y daca constante.
+
+\section{Activación Alternada}
+El juego se desarrolla a través de una serie de **Rondas**. En cada ronda, los jugadores alternan la activación de sus unidades.
+
+\begin{reglaespecial}{El Estado de Agotamiento}
+Al inicio de la Ronda, cada unidad recibe una \textbf{Ficha de Turno}. 
+\begin{itemize}
+    \item Cuando activas una unidad, esta consume su ficha.
+    \item Una vez terminadas sus acciones, la unidad entra en estado \textbf{Agotado}.
+    \item Una unidad Agotada no puede ser activada de nuevo hasta la siguiente ronda, a menos que una habilidad especial indique lo contrario.
+\end{itemize}
+\end{reglaespecial}
+
+\section{Recursos de Unidad: PA y PE}
+Cada miniatura tiene una reserva de energía y capacidad física que limita lo que puede hacer en un solo turno.
+
+\subsection{Puntos de Acción (PA)}
+Los **PA** representan el esfuerzo físico. Una unidad promedio comienza con su valor base de PA (indicado en su ficha) y puede gastarlos en acciones básicas o reacciones.
+
+\subsection{Puntos de Energía (PE)}
+Los **PE** representan el vínculo con la Gema o el esfuerzo mental. Se utilizan exclusivamente para habilidades mágicas o técnicas sobrehumanas. A diferencia de los PA, los PE pueden extraerse de tres fuentes:
+\begin{enumerate}
+    \item \textbf{Reserva Propia:} Energía almacenada en la unidad.
+    \item \textbf{Vínculo de Gema:} Energía transmitida por un Líder (ver área de influencia).
+    \item \textbf{El Entorno:} Extracción directa del mapa (creando una \textbf{Zona Seca}).
+\end{enumerate}
+
+\section{Acciones Disponibles}
+Durante su activación, una unidad puede realizar cualquier combinación de acciones mientras tenga **PA** para costearlas.
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\linewidth}{|l|c|X|}
+\hline
+\rowcolor{GoldRule!20} \textbf{Acción} & \textbf{Coste} & \textbf{Descripción} \\ \hline
+\textbf{Mover} & 1 PA & Desplazarse hasta su valor de MOV en cm. \\ \hline
+\textbf{Atacar} & 1 PA & Realizar un ataque de Melee o Rango. \\ \hline
+\textbf{Placaje} & 1 PA & Intento de mover o derribar a un enemigo. \\ \hline
+\textbf{Asistir} & 1 PA & Otorga +2 a la siguiente tirada de un aliado. \\ \hline
+\textbf{Interactuar} & 1 PA & Robar la Gema, abrir puertas o usar objetos. \\ \hline
+\end{tabularx}
+\caption{Acciones Básicas de Combate}
+\end{table}
+
+\section{Reacciones}
+Las unidades pueden actuar fuera de su activación gastando PA para responder a una amenaza enemiga (como realizar un Bloqueo o un Contraataque). Una unidad \textbf{Agotada} tiene limitado el uso de reacciones.
+
+\vfill
+\begin{center}
+    \textit{La duda es el primer paso hacia la derrota. Gasta tus puntos con sabiduría.}
+\end{center}
+
+
+\begin{relato}{Crónica del Primer Impacto: Kaelen el Evolgen}
+"Mis pulmones ardían, no por el aire viciado de las Tierras Secas, sino por la demanda de la Gema. Vi al Biskrorum alzando su maza; mi mente calculó mil trayectorias en un segundo. Gasté mi última chispa de energía en un parpadeo táctico. El acero chocó contra el vacío donde yo solía estar. No hay gloria en esto, solo la fría certeza de que Bhör nos mira, esperando que el último de nosotros caiga para declarar un ganador."
+\end{relato}

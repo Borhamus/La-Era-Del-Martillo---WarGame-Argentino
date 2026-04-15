@@ -1,0 +1,145 @@
+\cleardoublepage 
+\chapter{Grimorio de Combate: Spells y Auras}
+
+\textit{Cartas formato TCG (88x63mm). Diseño optimizado: el cuadro de Costo ancla la esquina inferior izquierda, compartiendo altura con el bloque de Efecto y Lore.}
+
+\vspace{0.5cm}
+
+\begin{center}
+\begin{tcbitemize}[
+    raster columns=2, 
+    raster rows=4,
+    raster column skip=0.4cm,
+    raster row skip=0.3cm,
+    enhanced,
+    width=8.8cm, 
+    height=6.3cm,
+    sharp corners,
+    colframe=VoidBlack,
+    colback=VoidPurple!5,
+    boxed title style={colback=VoidPurple},
+    fontupper=\footnotesize,
+    halign upper=flush left,
+    valign=top, 
+    raster width=18cm, 
+    raster force size,
+    boxsep=2pt, left=2pt, right=2pt, top=0pt, bottom=2pt % bottom=2pt pega el contenido al fondo
+]
+
+    % ==========================================
+    % CARTA 1: BARRERA ENTRÓPICA
+    % ==========================================
+    \tcbitem[title={\textbf{BARRERA ENTRÓPICA} \hfill \small 1 PE}]
+        
+        % 1. Subtítulo
+        {\fontsize{6.5}{7}\selectfont \textbf{Tipo:} Reacción \hfill \textbf{Unidad:} Cualquiera} 
+        \vspace{2pt}
+
+        % 2. Imagen Placeholder (Ahora es más grande y protagonista)
+        \begin{tcolorbox}[colback=gray!15, colframe=gray!40, height=2.6cm, 
+                          halign=center, valign=center, sharp corners, size=small, nobeforeafter]
+            \textcolor{gray!80}{\textit{[Imagen Placeholder]}}
+        \end{tcolorbox}
+        
+        \vfill % Empuja el bloque inferior hacia la esquina de abajo
+
+        % 3. BLOQUE INFERIOR (Costo a la Izq | Efecto + Leyenda a la Der)
+        \noindent
+        \begin{minipage}[b]{0.22\linewidth}
+            % Cuadrado de Costo (Altura total de 1.8cm)
+            \begin{tcolorbox}[colback=BloodPurple, colframe=VoidBlack, sharp corners, 
+                              halign=center, valign=center, boxsep=0pt, left=0pt, right=0pt, top=0pt, bottom=0pt, nobeforeafter, height=1.8cm]
+                \textcolor{white}{\fontsize{5.5}{6}\selectfont COSTO\\[3pt] \Large \textbf{1}}
+            \end{tcolorbox}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}[b]{0.76\linewidth}
+            % Caja de Efecto (Altura de 1.3cm)
+            \begin{tcolorbox}[colback=white, colframe=VoidPurple, sharp corners, boxrule=0.5pt, 
+                              left=2pt, right=2pt, top=2pt, bottom=2pt, nobeforeafter, height=1.3cm]
+                \fontsize{6}{7}\selectfont \textbf{Efecto:} Absorbe todo el daño del ataque enemigo. Sufres \textbf{1 Daño Directo} inevitable.
+            \end{tcolorbox}
+            \vspace{2pt}
+            % Leyenda (Ocupa los 0.5cm restantes para igualar al cuadrado)
+            \begin{center}
+                \fontsize{5.5}{6}\selectfont \textit{''Mejor sangrar por el Padre que por el enemigo.''}
+            \end{center}
+        \end{minipage}
+
+
+    % ==========================================
+    % CARTA 2: BALIZA DE ENJAMBRE
+    % ==========================================
+    \tcbitem[title={\textbf{BALIZA DE ENJAMBRE} \hfill \small 2 PE}]
+        
+        {\fontsize{6.5}{7}\selectfont \textbf{Tipo:} Artefacto \hfill \textbf{Unidad:} Mago} 
+        \vspace{2pt}
+
+        \begin{tcolorbox}[colback=gray!15, colframe=gray!40, height=2.6cm, 
+                          halign=center, valign=center, sharp corners, size=small, nobeforeafter]
+            \textcolor{gray!80}{\textit{[Imagen Placeholder]}}
+        \end{tcolorbox}
+
+        \vfill
+
+        \noindent
+        \begin{minipage}[b]{0.22\linewidth}
+            \begin{tcolorbox}[colback=BloodPurple, colframe=VoidBlack, sharp corners, 
+                              halign=center, valign=center, boxsep=0pt, left=0pt, right=0pt, top=0pt, bottom=0pt, nobeforeafter, height=1.8cm]
+                \textcolor{white}{\fontsize{5.5}{6}\selectfont COSTO\\[3pt] \Large \textbf{3}}
+            \end{tcolorbox}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}[b]{0.76\linewidth}
+            \begin{tcolorbox}[colback=white, colframe=VoidPurple, sharp corners, boxrule=0.5pt, 
+                              left=2pt, right=2pt, top=2pt, bottom=2pt, nobeforeafter, height=1.3cm]
+                \fontsize{6}{7}\selectfont \textbf{Efecto:} Aura 20cm. Otorga Daño Explosivo. Mantenimiento: \textbf{1 FOCUS y 1 PV} por turno.
+            \end{tcolorbox}
+            \vspace{2pt}
+            \begin{center}
+                \fontsize{5.5}{6}\selectfont \textit{''Extendiendo la red neuronal del Padre.''}
+            \end{center}
+        \end{minipage}
+
+
+    % ==========================================
+    % CARTA 3: MANTO OSCURO
+    % ==========================================
+    \tcbitem[title={\textbf{MANTO OSCURO} \hfill \small 0 PE}]
+        
+        {\fontsize{6.5}{7}\selectfont \textbf{Tipo:} Aura Soporte \hfill \textbf{Unidad:} Héroes} 
+        \vspace{2pt}
+
+        \begin{tcolorbox}[colback=gray!15, colframe=gray!40, height=2.6cm, 
+                          halign=center, valign=center, sharp corners, size=small, nobeforeafter]
+            \textcolor{gray!80}{\textit{[Imagen Placeholder]}}
+        \end{tcolorbox}
+        
+        \vfill
+
+        \noindent
+        \begin{minipage}[b]{0.22\linewidth}
+            \begin{tcolorbox}[colback=BloodPurple, colframe=VoidBlack, sharp corners, 
+                              halign=center, valign=center, boxsep=0pt, left=0pt, right=0pt, top=0pt, bottom=0pt, nobeforeafter, height=1.8cm]
+                \textcolor{white}{\fontsize{5.5}{6}\selectfont COSTO\\[3pt] \Large \textbf{2}}
+            \end{tcolorbox}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}[b]{0.76\linewidth}
+            \begin{tcolorbox}[colback=white, colframe=VoidPurple, sharp corners, boxrule=0.5pt, 
+                              left=2pt, right=2pt, top=2pt, bottom=2pt, nobeforeafter, height=1.3cm]
+                \fontsize{6}{7}\selectfont \textbf{Efecto:} Aliados a 10cm ganan +5cm de Movimiento por cada PA. Mantenimiento: \textbf{1 FOCUS}.
+            \end{tcolorbox}
+            \vspace{2pt}
+            \begin{center}
+                \fontsize{5.5}{6}\selectfont \textit{''Viajamos por las sombras entre los átomos.''}
+            \end{center}
+        \end{minipage}
+
+\end{tcbitemize}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+\mbox{} 
+\newpage
