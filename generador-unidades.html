@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Era del Martillo — Generador</title>
+<style>
+:root {
+  --bg:#0f0f0f; --bg2:#161616; --bg3:#1e1e1e; --bg4:#252525;
+  --border:#2a2a2a; --text:#ddd8cc; --muted:#666;
+  --gold:#D4AF37; --tain-c:#4CAF7D; --dein-c:#E05252;
+  --bisk-c:#A87FD6; --evol-c:#E8C84A;
+  --mod-p3:#22c55e; --mod-p2:#4ade80; --mod-p1:#86efac;
+  --mod-n0:#444; --mod-m1:#fb923c; --mod-m2:#f97316; --mod-m3:#ef4444;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;font-size:13px;min-height:100vh;}
+::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:#111;} ::-webkit-scrollbar-thumb{background:#333;}
+
+header{background:linear-gradient(135deg,#1a0808,#08081a);border-bottom:2px solid var(--gold);padding:10px 20px;display:flex;align-items:center;gap:12px;}
+header h1{font-size:17px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+header .sub{color:var(--muted);font-size:10px;margin-left:auto;}
+
+.main{display:grid;grid-template-columns:390px 1fr;min-height:calc(100vh - 44px);}
+
+.builder{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;max-height:calc(100vh - 44px);}
+
+.right{background:var(--bg);display:flex;flex-direction:column;max-height:calc(100vh - 44px);}
+
+/* SET CONTROLS */
+.set-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.set-name-inp{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:4px;font-size:12px;font-weight:600;width:180px;}
+.set-name-inp:focus{outline:none;border-color:var(--gold);}
+.set-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:4px;cursor:pointer;font-size:11px;display:flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap;}
+.set-btn:hover{border-color:#555;color:var(--gold);}
+.set-btn.danger:hover{border-color:var(--mod-m3);color:var(--mod-m3);}
+.set-btn.primary{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700;}
+.set-btn.primary:hover{opacity:.85;color:#000;}
+.file-lbl{cursor:pointer;}
+.file-lbl input{display:none;}
+.set-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;}
+.tab{padding:9px 14px;cursor:pointer;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);border-bottom:2px solid transparent;transition:all .15s;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-content{display:none;padding:14px;overflow-y:auto;flex:1;}
+.tab-content.active{display:block;}
+
+/* CARDS */
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:12px;}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px;font-weight:700;}
+
+/* BUDGET */
+.budget-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:10px 12px;}
+.budget-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.budget-bar-outer{height:7px;background:var(--bg);border-radius:4px;overflow:hidden;}
+.budget-bar-inner{height:7px;border-radius:4px;transition:width .2s,background .2s;}
+.budget-legend{display:flex;justify-content:space-between;margin-top:3px;font-size:10px;color:var(--muted);}
+
+/* COST BOX */
+.cost-box{background:linear-gradient(135deg,#130e00,#080813);border:2px solid var(--gold);border-radius:6px;padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;}
+.cost-num{font-size:42px;font-weight:700;color:var(--gold);line-height:1;text-align:center;}
+.cost-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);text-align:center;margin-top:2px;}
+.army-num{font-size:36px;font-weight:700;color:var(--bisk-c);line-height:1;text-align:center;}
+.army-sub{font-size:9px;color:var(--muted);text-transform:uppercase;text-align:center;margin-top:2px;}
+.army-of60{font-size:10px;color:var(--muted);text-align:center;margin-top:4px;}
+.cost-army{border-left:1px solid var(--border);padding-left:8px;}
+
+/* FACTION */
+.fac-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;}
+.fac-btn{padding:7px;border:2px solid #222;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;text-align:center;background:var(--bg2);transition:all .15s;}
+.fac-btn.tain{color:var(--tain-c);} .fac-btn.tain.active{border-color:var(--tain-c);background:#0b1f14;}
+.fac-btn.dein{color:var(--dein-c);} .fac-btn.dein.active{border-color:var(--dein-c);background:#1f0b0b;}
+.fac-btn.bisk{color:var(--bisk-c);} .fac-btn.bisk.active{border-color:var(--bisk-c);background:#130b1f;}
+.fac-btn.evol{color:var(--evol-c);} .fac-btn.evol.active{border-color:var(--evol-c);background:#1a1800;}
+
+/* INPUTS */
+.inp{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:6px 9px;border-radius:4px;font-size:12px;margin-bottom:7px;}
+.inp:focus{outline:none;border-color:var(--gold);}
+select.inp{cursor:pointer;}
+
+/* STAT ROW */
+.stat-row{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid #1a1a1a;}
+.stat-row:last-child{border-bottom:none;}
+.stat-name{width:105px;font-size:11px;flex-shrink:0;}
+.stat-ctrl{display:flex;align-items:center;gap:3px;}
+.btn-s{width:22px;height:22px;background:var(--bg);border:1px solid var(--border);color:var(--text);cursor:pointer;border-radius:3px;font-size:13px;display:flex;align-items:center;justify-content:center;transition:background .1s;line-height:1;flex-shrink:0;}
+.btn-s:hover:not(:disabled){background:#2a2a2a;} .btn-s:disabled{opacity:.3;cursor:not-allowed;}
+.stat-val{width:38px;text-align:center;font-weight:700;font-size:13px;color:var(--gold);}
+.stat-bar-w{flex:1;height:3px;background:var(--bg);border-radius:2px;min-width:20px;}
+.stat-bar-f{height:3px;border-radius:2px;background:var(--gold);transition:width .15s;}
+.stat-mod{width:30px;text-align:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.stat-cost{width:36px;text-align:right;font-size:10px;color:#666;flex-shrink:0;}
+.stat-cap{font-size:9px;color:var(--mod-m2);margin-left:2px;flex-shrink:0;}
+
+.mod.p3{color:var(--mod-p3);} .mod.p2{color:var(--mod-p2);} .mod.p1{color:var(--mod-p1);}
+.mod.n0{color:var(--mod-n0);} .mod.m1{color:var(--mod-m1);} .mod.m2{color:var(--mod-m2);} .mod.m3{color:var(--mod-m3);}
+
+/* TOGGLE */
+.gema-row{display:flex;align-items:center;gap:8px;padding:6px 0;}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.tslider{position:absolute;cursor:pointer;inset:0;background:#333;border-radius:20px;transition:.2s;}
+.tslider:before{content:'';position:absolute;width:14px;height:14px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.2s;}
+input:checked+.tslider{background:var(--gold);}
+input:checked+.tslider:before{transform:translateX(16px);}
+
+/* WARNING */
+.warning{background:#2a1500;border:1px solid #7a3500;border-radius:4px;padding:7px 9px;font-size:10px;color:#f0a060;display:none;margin-top:6px;}
+.warning.show{display:block;}
+
+/* BUTTONS */
+.save-btn{background:var(--gold);color:#000;border:none;padding:9px;border-radius:4px;cursor:pointer;font-weight:700;font-size:12px;text-transform:uppercase;width:100%;transition:opacity .15s;}
+.save-btn:hover{opacity:.85;}
+.new-btn{background:transparent;color:var(--muted);border:1px solid var(--border);padding:7px;border-radius:4px;cursor:pointer;font-size:11px;width:100%;transition:all .15s;}
+.new-btn:hover{border-color:#555;color:var(--text);}
+
+/* BREAKDOWN */
+.bk{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;margin-top:6px;}
+.bk-row{display:flex;justify-content:space-between;font-size:10px;padding:2px 0;border-bottom:1px solid #1c1c1c;}
+.bk-name{color:var(--muted);} .bk-val{color:var(--text);font-weight:600;}
+
+/* ROSTER */
+.unit-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:9px 11px;margin-bottom:5px;display:flex;align-items:flex-start;gap:9px;cursor:pointer;transition:border-color .15s;}
+.unit-card:hover{border-color:#444;} .unit-card.selected{border-color:var(--gold);}
+.unit-info{flex:1;min-width:0;}
+.unit-name{font-weight:700;font-size:13px;margin-bottom:3px;}
+.unit-race{font-size:10px;color:var(--muted);margin-bottom:4px;}
+.unit-mini{display:flex;gap:4px;flex-wrap:wrap;}
+.ms{background:var(--bg3);border-radius:3px;padding:2px 5px;font-size:10px;color:var(--muted);}
+.ms span{color:var(--gold);font-weight:700;}
+.unit-badge{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:3px 8px;text-align:center;flex-shrink:0;}
+.badge-num{font-size:24px;font-weight:700;line-height:1;}
+.del-btn{background:none;border:none;color:#444;cursor:pointer;font-size:16px;padding:2px;transition:color .15s;flex-shrink:0;}
+.del-btn:hover{color:var(--dein-c);}
+.fac-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;border:1px solid;display:inline-block;}
+.fac-tag.tain{color:var(--tain-c);border-color:var(--tain-c);}
+.fac-tag.dein{color:var(--dein-c);border-color:var(--dein-c);}
+.fac-tag.bisk{color:var(--bisk-c);border-color:var(--bisk-c);}
+.fac-tag.evol{color:var(--evol-c);border-color:var(--evol-c);}
+.empty{text-align:center;color:var(--muted);padding:40px;font-size:12px;}
+
+/* IDENTITY TABLE */
+.id-table{width:100%;border-collapse:collapse;font-size:11px;}
+.id-table th,.id-table td{border:1px solid var(--border);padding:5px 7px;}
+.id-table th{background:var(--bg3);font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600;}
+.id-table .sth{text-align:left;color:var(--text);font-weight:400;}
+.id-table .tain-th{color:var(--tain-c);} .id-table .dein-th{color:var(--dein-c);}
+.id-table .bisk-th{color:var(--bisk-c);} .id-table .evol-th{color:var(--evol-c);}
+.id-table td{background:var(--bg2);vertical-align:middle;}
+.id-table tr:hover td{background:var(--bg3);}
+
+/* MOD CELL editable */
+.mod-cell{display:flex;align-items:center;justify-content:center;gap:3px;}
+.mod-cell .mc-val{min-width:32px;text-align:center;font-weight:700;font-size:11px;}
+.mc-btn{width:18px;height:18px;background:var(--bg);border:1px solid var(--border);color:var(--muted);cursor:pointer;border-radius:2px;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .1s;flex-shrink:0;}
+.mc-btn:hover:not(:disabled){background:#2a2a2a;color:var(--text);}
+.mc-btn:disabled{opacity:.2;cursor:not-allowed;}
+
+/* LORE CELL editable */
+.lore-inp{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--muted);padding:3px 6px;border-radius:3px;font-size:9px;resize:none;min-height:32px;font-family:inherit;}
+.lore-inp:focus{outline:none;border-color:#444;color:var(--text);}
+
+/* COST TABLE */
+.cost-tbl{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px;}
+.cost-tbl th,.cost-tbl td{border:1px solid var(--border);padding:5px 7px;}
+.cost-tbl th{background:var(--bg3);color:var(--muted);font-size:9px;text-transform:uppercase;}
+.cost-tbl td:not(:first-child){text-align:center;color:var(--gold);}
+.cost-tbl td:last-child{color:#888;}
+
+/* ANALYSIS */
+.fac-avg-row{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:10px;margin-bottom:8px;}
+.avg-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:6px;}
+.avg-cell{text-align:center;background:var(--bg3);border-radius:3px;padding:4px 2px;}
+.av-name{font-size:8px;color:var(--muted);text-transform:uppercase;}
+.av-val{font-size:14px;font-weight:700;color:var(--gold);}
+
+hr.sep{border:none;border-top:1px solid #1e1e1e;margin:4px 0;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:10px 16px;font-size:12px;color:var(--text);z-index:999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.ok{border-color:var(--mod-p2);color:var(--mod-p2);}
+.toast.err{border-color:var(--mod-m2);color:var(--mod-m2);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚔ La Era del Martillo</h1>
+  <span class="sub">Lista de ejército: 60 pts · v2.1</span>
+</header>
+
+<div class="main">
+
+<!-- ===== BUILDER ===== -->
+<div class="builder">
+
+  <div class="cost-box">
+    <div>
+      <div class="cost-num" id="totalCost">0</div>
+      <div class="cost-label">Puntos de Construcción</div>
+    </div>
+    <div class="cost-army">
+      <div class="army-num" id="armyCost">—</div>
+      <div class="army-sub">Costo de Ejército</div>
+      <div class="army-of60" id="armyOf60">—/60 pts</div>
+    </div>
+  </div>
+
+  <div class="budget-wrap">
+    <div class="budget-row">
+      <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Presupuesto heroico</span>
+      <span style="font-size:13px;font-weight:700;"><span id="budgetUsed" style="color:var(--gold)">0</span> / 300 bp</span>
+    </div>
+    <div class="budget-bar-outer"><div class="budget-bar-inner" id="budgetBar" style="width:0%;background:var(--gold)"></div></div>
+    <div class="budget-legend"><span>Mínimo</span><span id="budgetPct">0%</span><span>Especialista</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Identidad</div>
+    <input class="inp" id="unitName" placeholder="Nombre...">
+    <input class="inp" id="unitRace" placeholder="Raza / Tipo...">
+    <div class="fac-grid">
+      <button class="fac-btn tain" onclick="setFac('tain')">🌿 Semillas de Táin</button>
+      <button class="fac-btn dein" onclick="setFac('dein')">💀 Esbirros de Déin</button>
+      <button class="fac-btn bisk" onclick="setFac('bisk')">🌀 Biskrorum</button>
+      <button class="fac-btn evol" onclick="setFac('evol')">⚡ Evolgenia</button>
+    </div>
+  </div>
+
+  <div class="card"><div class="card-title">Acciones &amp; Energía</div><div id="grp-acciones"></div></div>
+  <div class="card"><div class="card-title">Combate</div><div id="grp-combate"></div></div>
+  <div class="card"><div class="card-title">Defensas</div><div id="grp-defensas"></div></div>
+  <div class="card"><div class="card-title">Utilidad</div><div id="grp-utilidad"></div></div>
+  <div class="card"><div class="card-title">HP por Localización</div><div id="grp-hp"></div></div>
+
+  <div class="card">
+    <div class="card-title">Inventario &amp; Gema</div>
+    <div id="grp-inv"></div>
+    <hr class="sep" style="margin:8px 0;">
+    <div class="gema-row">
+      <label class="toggle"><input type="checkbox" id="chkGema" onchange="recalc()"><span class="tslider"></span></label>
+      <span style="font-size:12px;">Puede Equipar Gema <span style="color:var(--muted);font-size:10px;">(+25 bp)</span></span>
+    </div>
+    <div class="gema-row" id="rowGemaEnMano" style="opacity:.4;pointer-events:none;">
+      <label class="toggle"><input type="checkbox" id="chkGemaEnMano" onchange="recalc()"><span class="tslider"></span></label>
+      <span style="font-size:11px;color:#aaa;">Tiene Gema en mano ahora</span>
+    </div>
+    <hr class="sep" style="margin:6px 0;">
+    <div style="font-size:10px;color:var(--muted);margin-bottom:5px;">Tipo de Arma</div>
+    <select class="inp" id="selWeapon" onchange="recalc()">
+      <option value="1m1m">1 Mano + 1 Mano</option>
+      <option value="2m">2 Manos</option>
+      <option value="1mesc">1 Mano + Escudo</option>
+      <option value="1mart">1 Mano + Artefacto</option>
+      <option value="1mgema">1 Mano + Gema</option>
+    </select>
+    <div class="warning" id="warnWeapon">⚠ Arma de 2 manos inutilizable mientras sostiene la Gema. Deberá pasarla a una unidad con el trait Gema para liberar ambas manos.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Desglose de Costos</div>
+    <div class="bk" id="breakdown"></div>
+  </div>
+
+  <button class="save-btn" onclick="saveUnit()">💾 Guardar Unidad</button>
+  <button class="new-btn" onclick="resetBuilder()">+ Nueva Unidad (sin guardar)</button>
+</div>
+
+<!-- ===== RIGHT ===== -->
+<div class="right">
+
+  <!-- SET CONTROLS -->
+  <div class="set-bar">
+    <span style="font-size:10px;color:var(--muted);white-space:nowrap;">Set:</span>
+    <input class="set-name-inp" id="setName" value="Set de Inicio" placeholder="Nombre del set...">
+    <div class="set-sep"></div>
+    <button class="set-btn primary" onclick="exportJSON()">⬇ Exportar JSON</button>
+    <label class="set-btn file-lbl" title="Cargar un archivo .json de set">⬆ Cargar JSON <input type="file" accept=".json" onchange="importJSON(this)"></label>
+    <div class="set-sep"></div>
+    <button class="set-btn danger" onclick="confirmNewSet()">↺ Nuevo Set</button>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('roster')">Roster</div>
+    <div class="tab" onclick="showTab('identidad')">Identidad de Facciones</div>
+    <div class="tab" onclick="showTab('analisis')">Análisis</div>
+  </div>
+
+  <!-- ROSTER -->
+  <div class="tab-content active" id="tab-roster">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);">Unidades</span>
+      <span style="font-size:10px;color:var(--muted);" id="rosterCount"></span>
+    </div>
+    <div id="rosterContent"></div>
+  </div>
+
+  <!-- IDENTIDAD -->
+  <div class="tab-content" id="tab-identidad">
+    <div style="font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:10px;">
+      Editá los modificadores de cada facción. <b style="color:var(--text);">+++ = más barato y mayor cap. --- = más caro y menor cap.</b>
+      Los cambios se aplican en tiempo real al builder y se guardan en el JSON del set.
+    </div>
+    <table class="id-table" id="identityTable"></table>
+
+    <div style="margin-top:20px;">
+      <div class="card-title">Referencia — Curva de Costos</div>
+      <table class="cost-tbl">
+        <thead><tr><th>Nivel</th><th>Delta para subir</th><th>Costo acumulado</th></tr></thead>
+        <tbody>
+          <tr><td>1 → 2</td><td>~5 bp</td><td>5 bp</td></tr>
+          <tr><td>2 → 3</td><td>~10 bp</td><td>15 bp</td></tr>
+          <tr><td>3 → 4</td><td>~20 bp</td><td>35 bp</td></tr>
+          <tr><td>4 → 5</td><td>~30 bp</td><td>65 bp</td></tr>
+          <tr><td>5 → 6</td><td>~40 bp</td><td>105 bp</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:10px;color:var(--muted);margin-top:6px;">3 stats en 6 = ~315 bp → costo de ejército ~14. Con descuento +++ puede bajar a ~173 bp → costo ~8.</div>
+    </div>
+  </div>
+
+  <!-- ANÁLISIS -->
+  <div class="tab-content" id="tab-analisis">
+    <div id="analysisContent"></div>
+  </div>
+
+</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ====================================================================
+// DEFINICIÓN DE STATS (inmutable)
+// ====================================================================
+const STATS = [
+  { id:'pa',       name:'P. Acción',    min:1, max:4, group:'acciones',
+    cost:[0,0,20,50,95],         disp:v=>`${v}` },
+  { id:'pe',       name:'P. Energía',   min:1, max:4, group:'acciones',
+    cost:[0,0,15,38,72],         disp:v=>`${v}` },
+  { id:'mov',      name:'Movimiento',   min:1, max:6, group:'combate',
+    cost:[0,0,5,13,25,42,64],    disp:v=>`${v*5}cm` },
+  { id:'melee',    name:'Melee ATK',    min:1, max:6, group:'combate',
+    cost:[0,0,5,15,35,65,105],   disp:v=>`+${v}` },
+  { id:'range',    name:'Range ATK',    min:1, max:6, group:'combate',
+    cost:[0,0,5,15,35,65,105],   disp:v=>`+${v}` },
+  { id:'reflejos', name:'Reflejos',     min:1, max:6, group:'defensas',
+    cost:[0,0,5,15,35,65,105],   disp:v=>`+${v}` },
+  { id:'bloqueo',  name:'Bloqueo',      min:1, max:6, group:'defensas',
+    cost:[0,0,4,12,28,52,84],    disp:v=>`+${v}` },
+  { id:'resfis',   name:'Res. Física',  min:1, max:6, group:'defensas',
+    cost:[0,0,4,12,28,52,84],    disp:v=>`+${v}` },
+  { id:'resmag',   name:'Res. Mágica',  min:1, max:6, group:'defensas',
+    cost:[0,0,4,12,28,52,84],    disp:v=>`+${v}` },
+  { id:'focus',    name:'Focus',        min:1, max:6, group:'utilidad',
+    cost:[0,0,5,15,35,65,105],   disp:v=>`+${v}` },
+  { id:'robar',    name:'Robar',        min:1, max:6, group:'utilidad',
+    cost:[0,0,4,11,25,46,74],    disp:v=>`+${v}` },
+  { id:'hp_cab',   name:'Cabeza',       min:1, max:10, group:'hp', cPt:2, base:1, disp:v=>`${v}` },
+  { id:'hp_bra',   name:'Brazos',       min:1, max:10, group:'hp', cPt:2, base:1, disp:v=>`${v}` },
+  { id:'hp_pie',   name:'Piernas',      min:1, max:10, group:'hp', cPt:2, base:1, disp:v=>`${v}` },
+  { id:'hp_cue',   name:'Cuerpo',       min:5, max:30, group:'hp', cPt:1, base:5, disp:v=>`${v}` },
+  { id:'spells',   name:'Slots Spells', min:0, max:6,  group:'inv', cPt:7, base:0, disp:v=>`${v}` },
+  { id:'bag',      name:'Slots Bag',    min:0, max:6,  group:'inv', cPt:3, base:0, disp:v=>`${v}` },
+];
+
+const STATS_FOR_TABLE = ['pa','pe','mov','melee','range','reflejos','bloqueo','resfis','resmag','focus','robar'];
+
+// ====================================================================
+// ESTADO MUTABLE — FMODS y LORE (editables)
+// ====================================================================
+const DEFAULT_FMODS = {
+  tain: { pa:0,  pe:1,  mov:2,  melee:1,  range:0,  reflejos:2,  bloqueo:1,  focus:1,  robar:-1, resfis:2,  resmag:-1 },
+  dein: { pa:1,  pe:2,  mov:-2, melee:3,  range:-1, reflejos:0,  bloqueo:-1, focus:2,  robar:2,  resfis:-2, resmag:1  },
+  bisk: { pa:2,  pe:3,  mov:1,  melee:-3, range:3,  reflejos:2,  bloqueo:-1, focus:3,  robar:0,  resfis:-1, resmag:1  },
+  evol: { pa:3,  pe:2,  mov:0,  melee:2,  range:2,  reflejos:1,  bloqueo:1,  focus:-1, robar:-1, resfis:1,  resmag:3  },
+};
+
+const DEFAULT_LORE = {
+  tain: { pa:'Ritmo natural.', pe:'Absorben Luz del entorno.', mov:'Criaturas del bosque.', melee:'Buenos guerreros, no especializados.', range:'Arcos y proyectiles de Luz.', reflejos:'Perciben almas — anticipan amenazas.', bloqueo:'Defensores naturales.', focus:'Manipular almas requiere concentración.', robar:'Facción honorable.', resfis:'Cuerpos vivos y robustos.', resmag:'La Luz no bloquea Éter ni Vacío.' },
+  dein: { pa:'Impulsados por energía oscura.', pe:'Cosechan PE del sufrimiento enemigo.', mov:'Cuerpos pesados o en descomposición.', melee:'Maestros del melee — cosechan miedo de cerca.', range:'Prefieren el contacto directo.', reflejos:'Reacciones estándar.', bloqueo:'Postura ofensiva.', focus:'La magia oscura exige concentración total.', robar:'Asesinos y drenadores.', resfis:'Cuerpos dañados.', resmag:'La Oscuridad resiste parcialmente la magia.' },
+  bisk: { pa:'El Vacío les permite actuar en múltiples planos.', pe:'El Vacío es su lengua materna — PE masivo.', mov:'Distorsionan el espacio.', melee:'Jamás cuerpo a cuerpo — guerreros del vacío lejano.', range:'Proyectiles de Vacío — arma primaria.', reflejos:'Percepción 360°, ven el vacío del espacio.', bloqueo:'Se evaden o teletransportan, no bloquean.', focus:'El Vacío es su idioma — Focus máximo.', robar:'No es su especialidad.', resfis:'Frágiles físicamente fuera del Vacío.', resmag:'El Vacío resiste parcialmente la magia.' },
+  evol: { pa:'Tech-aumentados — múltiples acciones simultáneas.', pe:'El Éter está en todas partes, lo acceden con técnica.', mov:'La tecnología tiene peso.', melee:'Armas melee tech-aumentadas — letales.', range:'Armamento de alta precisión.', reflejos:'Tech-mejoras perceptivas.', bloqueo:'Escudos tecnológicos.', focus:'Usan entendimiento técnico, no sentir la energía.', robar:'Facción de técnicos.', resfis:'Armaduras tech.', resmag:'Reescriben el Éter — resisten magia por naturaleza.' },
+};
+
+// Clonar profundo
+function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+let fmods = deepClone(DEFAULT_FMODS);
+let lore  = deepClone(DEFAULT_LORE);
+
+const MULT    = {'-3':1.65,'-2':1.40,'-1':1.20,'0':1.0,'1':0.85,'2':0.70,'3':0.55};
+const CAP_RED = {'-3':-2,'-2':-1,'-1':0,'0':0,'1':0,'2':0,'3':0};
+const BUDGET  = 300;
+const DEFAULTS = { pa:1,pe:1,mov:1,melee:2,range:1,reflejos:2,bloqueo:2,resfis:1,resmag:1,focus:1,robar:1,hp_cab:3,hp_bra:3,hp_pie:3,hp_cue:8,spells:1,bag:1 };
+
+let S = { name:'',race:'',faction:'tain',stats:{...DEFAULTS},puedeGema:false,gemaEnMano:false,weapon:'1m1m',editId:null };
+let units = [];
+
+// ====================================================================
+// COSTOS
+// ====================================================================
+function rawCost(def, val) {
+  if (def.cost) return def.cost[val] || 0;
+  if (def.cPt  !== undefined) return (val - def.base) * def.cPt;
+  return 0;
+}
+function getEffCost(def, val, fac) {
+  if (def.group==='hp'||def.group==='inv') return rawCost(def,val);
+  const m = (fmods[fac]||{})[def.id] ?? 0;
+  return Math.round(rawCost(def,val) * (MULT[String(m)]||1));
+}
+function getMaxCap(def, fac) {
+  const m = (fmods[fac]||{})[def.id] ?? 0;
+  return Math.max(def.min, def.max + (CAP_RED[String(m)]||0));
+}
+function calcTotal() {
+  let total=0; const bk={};
+  STATS.forEach(d=>{ const c=getEffCost(d,S.stats[d.id],S.faction); total+=c; bk[d.id]=c; });
+  if (S.puedeGema) { total+=25; bk['gema']=25; } else bk['gema']=0;
+  return {total,bk};
+}
+function armyCost(bp) { return Math.max(5,Math.round(bp/23)); }
+
+// ====================================================================
+// HELPERS DE DISPLAY
+// ====================================================================
+function modStr(m) {
+  if (m>=3)  return '<span class="mod p3">+++</span>';
+  if (m===2) return '<span class="mod p2">++</span>';
+  if (m===1) return '<span class="mod p1">+</span>';
+  if (m===0) return '<span class="mod n0">·</span>';
+  if (m===-1)return '<span class="mod m1">−</span>';
+  if (m===-2)return '<span class="mod m2">−−</span>';
+  return '<span class="mod m3">−−−</span>';
+}
+function modBadge(m) { return `<span class="stat-mod">${modStr(m)}</span>`; }
+
+// ====================================================================
+// RENDER STATS
+// ====================================================================
+function renderGroup(gId, ids) {
+  const el=document.getElementById('grp-'+gId); if(!el)return;
+  let html='';
+  ids.forEach(id=>{
+    const def=STATS.find(d=>d.id===id); if(!def)return;
+    const val=S.stats[id], cap=getMaxCap(def,S.faction);
+    const effCost=getEffCost(def,val,S.faction);
+    const pct=((val-def.min)/(def.max-def.min)*100);
+    const m=(fmods[S.faction]||{})[def.id];
+    const capNote=cap<def.max?`<span class="stat-cap">max${cap}</span>`:'';
+    html+=`<div class="stat-row">
+      <span class="stat-name">${def.name}</span>
+      <div class="stat-ctrl">
+        <button class="btn-s" onclick="chgStat('${id}',-1)" ${val<=def.min?'disabled':''}>−</button>
+        <span class="stat-val">${def.disp(val)}</span>
+        <button class="btn-s" onclick="chgStat('${id}',1)" ${val>=cap?'disabled':''}>+</button>
+      </div>
+      <div class="stat-bar-w"><div class="stat-bar-f" style="width:${pct}%"></div></div>
+      ${m!==undefined?modBadge(m):''}${capNote}
+      <span class="stat-cost">${effCost}bp</span>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+function renderAllStats() {
+  renderGroup('acciones',['pa','pe']);
+  renderGroup('combate', ['mov','melee','range']);
+  renderGroup('defensas',['reflejos','bloqueo','resfis','resmag']);
+  renderGroup('utilidad',['focus','robar']);
+  renderGroup('hp',      ['hp_cab','hp_bra','hp_pie','hp_cue']);
+  renderGroup('inv',     ['spells','bag']);
+}
+
+// ====================================================================
+// RECALC
+// ====================================================================
+function recalc() {
+  S.puedeGema = document.getElementById('chkGema').checked;
+  S.gemaEnMano= document.getElementById('chkGemaEnMano').checked;
+  S.weapon    = document.getElementById('selWeapon').value;
+
+  const rowGem=document.getElementById('rowGemaEnMano');
+  rowGem.style.opacity=S.puedeGema?'1':'0.4';
+  rowGem.style.pointerEvents=S.puedeGema?'auto':'none';
+  if(!S.puedeGema){document.getElementById('chkGemaEnMano').checked=false;S.gemaEnMano=false;}
+  if(S.weapon==='1mgema'){document.getElementById('chkGemaEnMano').checked=true;S.gemaEnMano=true;}
+  document.getElementById('warnWeapon').classList.toggle('show',S.gemaEnMano&&S.weapon==='2m');
+
+  const {total,bk}=calcTotal();
+  const army=armyCost(total);
+  document.getElementById('totalCost').textContent=total;
+  document.getElementById('armyCost').textContent=army;
+  document.getElementById('armyOf60').textContent=`${army}/60 pts`;
+
+  const pct=Math.min(200,(total/BUDGET*100));
+  const bar=document.getElementById('budgetBar');
+  bar.style.width=Math.min(100,pct)+'%';
+  bar.style.background=pct<=60?'#4ade80':pct<=100?'var(--gold)':'#ef4444';
+  document.getElementById('budgetUsed').textContent=total;
+  document.getElementById('budgetPct').textContent=Math.round(pct)+'%';
+
+  const BKN={pa:'P. Acción',pe:'P. Energía',mov:'Movimiento',melee:'Melee ATK',range:'Range ATK',reflejos:'Reflejos',bloqueo:'Bloqueo',resfis:'Res. Física',resmag:'Res. Mágica',focus:'Focus',robar:'Robar',hp_cab:'HP Cabeza',hp_bra:'HP Brazos',hp_pie:'HP Piernas',hp_cue:'HP Cuerpo',spells:'Spells',bag:'Bag',gema:'Gema'};
+  document.getElementById('breakdown').innerHTML=Object.entries(bk).map(([k,v])=>
+    `<div class="bk-row"><span class="bk-name">${BKN[k]||k}</span><span class="bk-val">${v}</span></div>`
+  ).join('');
+
+  renderAllStats();
+  autosaveLocal();
+}
+
+function chgStat(id,delta) {
+  const def=STATS.find(d=>d.id===id);
+  const cap=getMaxCap(def,S.faction);
+  S.stats[id]=Math.min(cap,Math.max(def.min,S.stats[id]+delta));
+  recalc();
+}
+
+// ====================================================================
+// FACCIONES
+// ====================================================================
+function setFac(f) {
+  S.faction=f;
+  document.querySelectorAll('.fac-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.fac-btn.${f}`).classList.add('active');
+  STATS.forEach(def=>{const cap=getMaxCap(def,f);if(S.stats[def.id]>cap)S.stats[def.id]=cap;});
+  recalc();
+}
+
+// ====================================================================
+// GUARDAR / CARGAR UNIDADES
+// ====================================================================
+function saveUnit() {
+  const {total}=calcTotal();
+  const u={
+    id:S.editId||Date.now().toString(),
+    name:document.getElementById('unitName').value.trim()||'Sin nombre',
+    race:document.getElementById('unitRace').value.trim(),
+    faction:S.faction, stats:{...S.stats},
+    puedeGema:S.puedeGema, gemaEnMano:S.gemaEnMano, weapon:S.weapon,
+    buildCost:total, armyCost:armyCost(total),
+  };
+  const i=units.findIndex(u2=>u2.id===u.id);
+  if(i>=0)units[i]=u; else units.push(u);
+  S.editId=null;
+  renderRoster(); renderAnalysis(); autosaveLocal();
+  toast('Unidad guardada ✓','ok');
+}
+
+function loadUnit(id) {
+  const u=units.find(u2=>u2.id===id); if(!u)return;
+  S={...u,stats:{...u.stats},editId:id};
+  document.getElementById('unitName').value=u.name;
+  document.getElementById('unitRace').value=u.race||'';
+  document.getElementById('chkGema').checked=u.puedeGema;
+  document.getElementById('chkGemaEnMano').checked=u.gemaEnMano;
+  document.getElementById('selWeapon').value=u.weapon;
+  setFac(u.faction);
+}
+
+function delUnit(id,e) {
+  e.stopPropagation();
+  if(S.editId===id)resetBuilder();
+  units=units.filter(u=>u.id!==id);
+  renderRoster(); renderAnalysis(); autosaveLocal();
+  toast('Unidad eliminada','ok');
+}
+
+function resetBuilder() {
+  S={name:'',race:'',faction:S.faction,stats:{...DEFAULTS},puedeGema:false,gemaEnMano:false,weapon:'1m1m',editId:null};
+  document.getElementById('unitName').value='';
+  document.getElementById('unitRace').value='';
+  document.getElementById('chkGema').checked=false;
+  document.getElementById('chkGemaEnMano').checked=false;
+  document.getElementById('selWeapon').value='1m1m';
+  recalc();
+}
+
+// ====================================================================
+// IDENTITY TABLE — EDITABLE
+// ====================================================================
+function renderIdentityTable() {
+  const facs=['tain','dein','bisk','evol'];
+  const facCls={tain:'tain-th',dein:'dein-th',bisk:'bisk-th',evol:'evol-th'};
+  const facIco={tain:'🌿 Táin',dein:'💀 Déin',bisk:'🌀 Bisk',evol:'⚡ Evol'};
+
+  let html=`<thead><tr>
+    <th class="sth">Atributo</th>
+    ${facs.map(f=>`<th class="${facCls[f]}">${facIco[f]}</th>`).join('')}
+  </tr></thead><tbody>`;
+
+  STATS_FOR_TABLE.forEach(id=>{
+    const def=STATS.find(d=>d.id===id);
+    const name=def?def.name:id;
+    html+=`<tr><td class="sth">${name}</td>`;
+    facs.forEach(f=>{
+      const m=(fmods[f]||{})[id]??0;
+      const def2=STATS.find(d=>d.id===id);
+      const cap=def2?getMaxCap(def2,f):6;
+      const capNote=def2&&cap<def2.max?`<span style="font-size:8px;color:var(--mod-m2);display:block;text-align:center;">max ${cap}</span>`:'';
+      const mult=MULT[String(m)]||1;
+      const multNote=`<span style="font-size:8px;color:var(--muted);display:block;text-align:center;">×${mult}</span>`;
+      html+=`<td>
+        <div class="mod-cell">
+          <button class="mc-btn" onclick="changeMod('${f}','${id}',-1)" ${m<=-3?'disabled':''}>‹</button>
+          <div class="mc-val">${modStr(m)}</div>
+          <button class="mc-btn" onclick="changeMod('${f}','${id}',1)" ${m>=3?'disabled':''}>›</button>
+        </div>
+        ${capNote}${multNote}
+      </td>`;
+    });
+    html+=`</tr>`;
+    // Fila de lore (editable)
+    html+=`<tr style="background:var(--bg)!important;">
+      <td class="sth" style="font-size:9px;color:var(--muted);padding:3px 7px;font-style:italic;">lore</td>
+      ${facs.map(f=>`<td style="padding:3px;">
+        <textarea class="lore-inp" rows="2"
+          onchange="changeLore('${f}','${id}',this.value)"
+          >${(lore[f]||{})[id]||''}</textarea>
+      </td>`).join('')}
+    </tr>`;
+  });
+
+  html+='</tbody>';
+  document.getElementById('identityTable').innerHTML=html;
+}
+
+function changeMod(fac, id, delta) {
+  if(!fmods[fac]) fmods[fac]={};
+  fmods[fac][id]=Math.min(3,Math.max(-3,(fmods[fac][id]??0)+delta));
+  // Enforce cap on current stats if affected faction
+  if(fac===S.faction){
+    const def=STATS.find(d=>d.id===id);
+    if(def){const cap=getMaxCap(def,fac);if(S.stats[id]>cap)S.stats[id]=cap;}
+  }
+  renderIdentityTable();
+  recalc();
+}
+
+function changeLore(fac, id, val) {
+  if(!lore[fac]) lore[fac]={};
+  lore[fac][id]=val;
+  autosaveLocal();
+}
+
+// ====================================================================
+// JSON EXPORT / IMPORT
+// ====================================================================
+function buildExportData() {
+  return {
+    meta: {
+      setName: document.getElementById('setName').value.trim() || 'Set de Inicio',
+      game: 'La Era del Martillo',
+      version: '1',
+      savedAt: new Date().toISOString(),
+    },
+    config: { budget: BUDGET, armyPoints: 60 },
+    factionMods: deepClone(fmods),
+    factionLore: deepClone(lore),
+    units: deepClone(units),
+  };
+}
+
+function exportJSON() {
+  const data=buildExportData();
+  const name=(data.meta.setName||'set').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`${name}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast(`Exportado como ${name}.json ✓`,'ok');
+}
+
+function importJSON(input) {
+  const file=input.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try {
+      const data=JSON.parse(e.target.result);
+      // Validación mínima
+      if(!data.factionMods||!Array.isArray(data.units)) throw new Error('Formato inválido');
+      // Cargar datos
+      if(data.meta?.setName) document.getElementById('setName').value=data.meta.setName;
+      fmods=deepClone(data.factionMods);
+      lore=data.factionLore?deepClone(data.factionLore):deepClone(DEFAULT_LORE);
+      units=deepClone(data.units);
+      // Recalcular army cost por si la fórmula cambió
+      units.forEach(u=>{ u.buildCost=u.buildCost||0; u.armyCost=armyCost(u.buildCost); });
+      resetBuilder();
+      renderRoster();
+      renderIdentityTable();
+      renderAnalysis();
+      autosaveLocal();
+      toast(`Set "${data.meta?.setName||'desconocido'}" cargado ✓`,'ok');
+    } catch(err) {
+      toast(`Error al cargar: ${err.message}`,'err');
+    }
+    input.value=''; // reset para poder cargar mismo archivo de nuevo
+  };
+  reader.readAsText(file);
+}
+
+function confirmNewSet() {
+  if(units.length>0 && !confirm('¿Crear un set nuevo? Se va a perder el trabajo no exportado.')) return;
+  fmods=deepClone(DEFAULT_FMODS);
+  lore=deepClone(DEFAULT_LORE);
+  units=[];
+  document.getElementById('setName').value='Nuevo Set';
+  resetBuilder();
+  renderRoster();
+  renderIdentityTable();
+  renderAnalysis();
+  autosaveLocal();
+  toast('Nuevo set creado','ok');
+}
+
+// ====================================================================
+// LOCALSTORAGE (autosave como respaldo)
+// ====================================================================
+function autosaveLocal() {
+  localStorage.setItem('leedm_v3', JSON.stringify(buildExportData()));
+}
+
+function loadFromLocal() {
+  try {
+    const raw=localStorage.getItem('leedm_v3');
+    if(!raw) return false;
+    const data=JSON.parse(raw);
+    if(!data.factionMods||!Array.isArray(data.units)) return false;
+    if(data.meta?.setName) document.getElementById('setName').value=data.meta.setName;
+    fmods=deepClone(data.factionMods);
+    lore=data.factionLore?deepClone(data.factionLore):deepClone(DEFAULT_LORE);
+    units=deepClone(data.units);
+    return true;
+  } catch { return false; }
+}
+
+// ====================================================================
+// RENDER ROSTER
+// ====================================================================
+const FAC_META={
+  tain:{label:'Semillas de Táin',icon:'🌿'},
+  dein:{label:'Esbirros de Déin',icon:'💀'},
+  bisk:{label:'Biskrorum',       icon:'🌀'},
+  evol:{label:'Evolgenia',       icon:'⚡'},
+};
+const WPN={'1m1m':'1M+1M','2m':'2 Manos','1mesc':'1M+Escudo','1mart':'1M+Artefacto','1mgema':'1M+Gema'};
+
+function renderRoster() {
+  const el=document.getElementById('rosterContent');
+  document.getElementById('rosterCount').textContent=`${units.length} unidad${units.length!==1?'es':''}`;
+  if(!units.length){el.innerHTML='<div class="empty">No hay unidades. Construí la primera en el generador.</div>';return;}
+  let html='';
+  ['tain','dein','bisk','evol'].forEach(fac=>{
+    const fu=units.filter(u=>u.faction===fac); if(!fu.length)return;
+    const m=FAC_META[fac], gemas=fu.filter(u=>u.puedeGema).length;
+    html+=`<div style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
+        <span class="fac-tag ${fac}">${m.icon} ${m.label}</span>
+        <span style="font-size:10px;color:var(--muted);">${fu.length}/5 · 💎 ${gemas}/2</span>
+      </div>`;
+    fu.forEach(u=>{
+      const movDef=STATS.find(d=>d.id==='mov');
+      html+=`<div class="unit-card ${S.editId===u.id?'selected':''}" onclick="loadUnit('${u.id}')">
+        <div class="unit-info">
+          <div class="unit-name">${u.name}</div>
+          ${u.race?`<div class="unit-race">${u.race}</div>`:''}
+          <div class="unit-mini">
+            <span class="ms">PA <span>${u.stats.pa}</span></span>
+            <span class="ms">PE <span>${u.stats.pe}</span></span>
+            <span class="ms">MOV <span>${movDef.disp(u.stats.mov)}</span></span>
+            <span class="ms">MEL <span>+${u.stats.melee}</span></span>
+            <span class="ms">RNG <span>+${u.stats.range}</span></span>
+            <span class="ms">REF <span>+${u.stats.reflejos}</span></span>
+            <span class="ms">BLQ <span>+${u.stats.bloqueo}</span></span>
+            <span class="ms">FOC <span>+${u.stats.focus}</span></span>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap;align-items:center;">
+            <span style="font-size:10px;color:#666;">HP:${u.stats.hp_cab}/${u.stats.hp_bra}/${u.stats.hp_pie}/${u.stats.hp_cue}</span>
+            <span style="font-size:10px;color:#666;">${WPN[u.weapon]}</span>
+            ${u.puedeGema?'<span style="font-size:10px;color:var(--evol-c);">💎 Gema</span>':''}
+          </div>
+        </div>
+        <div>
+          <div class="unit-badge">
+            <div class="badge-num" style="color:var(--bisk-c);">${u.armyCost}</div>
+            <div style="font-size:8px;color:var(--muted);text-transform:uppercase;">pts</div>
+          </div>
+          <div style="font-size:9px;color:var(--muted);text-align:center;margin-top:2px;">${u.buildCost}bp</div>
+        </div>
+        <button class="del-btn" onclick="delUnit('${u.id}',event)" title="Eliminar">×</button>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+// ====================================================================
+// RENDER ANÁLISIS
+// ====================================================================
+function renderAnalysis() {
+  const el=document.getElementById('analysisContent');
+  if(!units.length){el.innerHTML='<div class="empty">Guardá unidades para ver el análisis.</div>';return;}
+  const totalArmy=units.reduce((a,u)=>a+u.armyCost,0);
+  const keyStats=['pa','pe','melee','range','reflejos','focus','resfis','resmag'];
+  let html=`<div class="card" style="margin-bottom:12px;">
+    <div class="card-title">Lista — 60 pts</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <div style="flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden;">
+        <div style="height:8px;border-radius:4px;background:${totalArmy<=60?'var(--gold)':'#ef4444'};width:${Math.min(100,totalArmy/60*100)}%;transition:width .3s;"></div>
+      </div>
+      <span style="font-size:13px;font-weight:700;color:${totalArmy<=60?'var(--gold)':'#ef4444'};">${totalArmy}/60 pts</span>
+    </div>
+    <div style="font-size:10px;color:var(--muted);">${units.length} unidades · Promedio: ${(totalArmy/units.length).toFixed(1)} pts/unidad</div>
+  </div>`;
+
+  ['tain','dein','bisk','evol'].forEach(fac=>{
+    const fu=units.filter(u=>u.faction===fac); if(!fu.length)return;
+    const m=FAC_META[fac];
+    html+=`<div class="fac-avg-row"><div style="font-size:11px;font-weight:700;color:var(--${fac}-c);margin-bottom:6px;">${m.icon} ${m.label} — ${fu.length} unidad${fu.length>1?'es':''}</div>
+    <div class="avg-grid">`;
+    keyStats.forEach(id=>{
+      const avg=fu.reduce((a,u)=>a+u.stats[id],0)/fu.length;
+      const mod=(fmods[fac]||{})[id]??0;
+      html+=`<div class="avg-cell">
+        <div class="av-name">${id.replace('resfis','R.Fís').replace('resmag','R.Mag').replace('reflejos','REF').replace('focus','FOC').replace('melee','MEL').replace('range','RNG')}</div>
+        <div class="av-val" style="color:${mod>=2?'var(--mod-p2)':mod<=-2?'var(--mod-m2)':'var(--gold)'}">${avg.toFixed(1)}</div>
+        <div style="height:3px;background:var(--bg);border-radius:2px;margin-top:3px;">
+          <div style="height:3px;border-radius:2px;background:${mod>=1?'var(--mod-p2)':mod<=-1?'var(--mod-m2)':'var(--gold)'};width:${Math.round((avg-1)/5*100)}%;"></div>
+        </div>
+      </div>`;
+    });
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+// ====================================================================
+// TABS
+// ====================================================================
+function showTab(name) {
+  const names=['roster','identidad','analisis'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',names[i]===name));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='analisis') renderAnalysis();
+}
+
+// ====================================================================
+// TOAST
+// ====================================================================
+function toast(msg, type='ok') {
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.className=`toast ${type} show`;
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>el.classList.remove('show'),2500);
+}
+
+// ====================================================================
+// INIT
+// ====================================================================
+document.addEventListener('DOMContentLoaded', ()=>{
+  const restored=loadFromLocal();
+  document.querySelector('.fac-btn.tain').classList.add('active');
+  recalc();
+  renderRoster();
+  renderIdentityTable();
+  if(restored) toast('Set anterior restaurado ✓','ok');
+});
+</script>
+</body>
+</html>

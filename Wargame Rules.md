@@ -217,3 +217,4 @@ Influence Area: el área de influencia de la “unidad con gema/Líder”.
 dentro de esta área los caster pueden castear gastando puntos de energía de gema.
 
 ## Hay varias formas de presentar esto mismo. cada faccion tiene su forma de presentar como es su Control point.
+
