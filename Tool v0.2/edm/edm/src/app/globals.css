@@ -1,0 +1,274 @@
+/* ============================================================
+   globals.css — La Era del Martillo V2
+   CSS variables, temas y estilos de impresión
+   ============================================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Variables de tema — Dark (default gaming) ---- */
+@layer base {
+  :root {
+    /* Base */
+    --background: 0 0% 6%;          /* #0f0f0f */
+    --foreground: 40 15% 85%;       /* #ddd8cc */
+
+    /* Cards y superficies */
+    --card: 0 0% 9%;                /* #161616 */
+    --card-foreground: 40 15% 85%;
+
+    /* Popover */
+    --popover: 0 0% 12%;
+    --popover-foreground: 40 15% 85%;
+
+    /* Primario — dorado */
+    --primary: 43 69% 52%;          /* #D4AF37 */
+    --primary-foreground: 0 0% 0%;
+
+    /* Secundario */
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 40 15% 85%;
+
+    /* Muted */
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 40%;   /* #666 */
+
+    /* Acento */
+    --accent: 0 0% 14%;
+    --accent-foreground: 40 15% 85%;
+
+    /* Destructivo */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Bordes e inputs */
+    --border: 0 0% 16%;             /* #2a2a2a */
+    --input: 0 0% 16%;
+    --ring: 43 69% 52%;             /* dorado */
+
+    /* Border radius */
+    --radius: 0.375rem;
+  }
+
+  /* ---- Light mode ---- */
+  .light {
+    --background: 220 14% 96%;      /* #f3f4f6 */
+    --foreground: 224 71% 4%;       /* #1f2937 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+
+    --primary: 43 69% 40%;          /* dorado más oscuro para legibilidad */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 90%;
+    --secondary-foreground: 224 71% 4%;
+
+    --muted: 220 14% 90%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 220 14% 90%;
+    --accent-foreground: 224 71% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 87%;
+    --input: 220 13% 87%;
+    --ring: 43 69% 40%;
+  }
+}
+
+/* ---- Reset base ---- */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Scrollbars personalizados */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground;
+  }
+}
+
+/* ---- Componentes utilitarios del juego ---- */
+@layer components {
+  /* Dots de PV (Puntos de acción/energía/mov) */
+  .pv-dot {
+    @apply text-[17px] leading-none;
+    color: var(--pv-empty, #2d2d2d);
+    transition: color 0.1s;
+  }
+  .pv-dot.on {
+    color: #22c55e;
+  }
+
+  /* Dots de afinidad */
+  .aff-dot {
+    @apply text-[10px];
+    color: var(--pv-empty, #2d2d2d);
+  }
+  .aff-dot.on {
+    color: #4ade80;
+  }
+
+  /* Tags de facción */
+  .fac-tag {
+    @apply text-[9px] font-bold px-1.5 py-0.5 rounded border inline-block;
+  }
+  .fac-tag.tain { @apply text-tain border-tain; }
+  .fac-tag.dein { @apply text-dein border-dein; }
+  .fac-tag.bisk { @apply text-bisk border-bisk; }
+  .fac-tag.evol { @apply text-evol border-evol; }
+
+  /* Barra de presupuesto */
+  .budget-bar {
+    @apply h-1.5 rounded-full transition-all duration-200;
+  }
+
+  /* Botones de stat (+ / -) */
+  .btn-stat {
+    @apply w-[22px] h-[22px] bg-background border border-border text-foreground
+           cursor-pointer rounded-sm text-sm flex items-center justify-center
+           transition-colors flex-shrink-0;
+  }
+  .btn-stat:hover:not(:disabled) {
+    @apply bg-secondary;
+  }
+  .btn-stat:disabled {
+    @apply opacity-30 cursor-not-allowed;
+  }
+
+  /* Touch targets mínimos iOS/Android */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}
+
+/* ============================================================
+   IMPRESIÓN — @media print
+   ============================================================ */
+
+@media print {
+  /* Ocultar UI de navegación */
+  nav, header, .no-print, .print-hide {
+    display: none !important;
+  }
+
+  /* Base de impresión */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 10pt;
+  }
+
+  /* ---- Grid: Fichas grandes 2×2 por A4 ---- */
+  .print-grid-big {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8mm;
+    width: 190mm;
+    margin: 0 auto;
+  }
+
+  /* ---- Grid: Cartas de items 4×4 por A4 ---- */
+  .print-grid-small {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4mm;
+    width: 190mm;
+    margin: 0 auto;
+  }
+
+  /* ---- Tarjeta de unidad (Full Sheet) ---- */
+  .print-unit-card {
+    width: 88mm;
+    min-height: 120mm;
+    border: 1px solid #333;
+    border-radius: 3mm;
+    padding: 6mm;
+    page-break-inside: avoid;
+    background: white;
+  }
+
+  /* ---- Carta de item (tamaño Magic estándar) ---- */
+  .print-item-card {
+    width: 63mm;
+    height: 88mm;
+    border: 1px solid #333;
+    border-radius: 3mm;
+    padding: 4mm;
+    page-break-inside: avoid;
+    overflow: hidden;
+    background: white;
+  }
+
+  /* ---- Tarjeta de misión (Oversized Magic / Commander) ---- */
+  .print-mission-card {
+    width: 89mm;
+    height: 119mm;
+    border: 2px solid #333;
+    border-radius: 4mm;
+    padding: 6mm;
+    page-break-inside: avoid;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: white;
+  }
+
+  .print-mission-card .mission-header {
+    border-bottom: 1px solid #666;
+    padding-bottom: 3mm;
+    margin-bottom: 3mm;
+  }
+
+  .print-mission-card .mission-name {
+    font-size: 14pt;
+    font-weight: bold;
+  }
+
+  .print-mission-card .mission-vp {
+    font-size: 20pt;
+    font-weight: bold;
+  }
+
+  .print-mission-card .mission-body {
+    flex: 1;
+    font-size: 9pt;
+    line-height: 1.5;
+  }
+
+  .print-mission-card .mission-footer {
+    border-top: 1px solid #999;
+    padding-top: 2mm;
+    margin-top: 2mm;
+    font-size: 7pt;
+    color: #555;
+    font-style: italic;
+  }
+
+  /* Forzar salto de página entre grids */
+  .print-page-break {
+    page-break-after: always;
+  }
+}

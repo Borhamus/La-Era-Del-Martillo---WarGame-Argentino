@@ -1,8 +1,4 @@
-Voy a leer ambos documentos con atención antes de redactar el prompt unificado.
 
-Los documentos ya están en mi contexto. Voy a analizarlos y sintetizarlos en un único prompt cohesivo y bien estructurado.Analicé ambos documentos en detalle. Aquí está el prompt unificado, consolidando toda la información sin redundancias y con una jerarquía clara:Aquí está el prompt unificado, listo para pegar en tu agente de IA:
-
----
 
 ```
 # Prompt Maestro: La Era del Martillo V2 — Plataforma SaaS Fullstack

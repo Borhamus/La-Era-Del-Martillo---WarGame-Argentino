@@ -1,0 +1,408 @@
+// ============================================================
+// La Era del Martillo — schema.prisma
+// Diseñado para V2 con espacio para V3 (motor de juego online)
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum MissionType {
+  PRINCIPAL
+  SECUNDARIA
+}
+
+// V3: Estado de la sala de juego
+enum RoomStatus {
+  WAITING    // Esperando jugadores
+  IN_PROGRESS
+  FINISHED
+}
+
+// ============================================================
+// AUTH & USUARIOS
+// ============================================================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  username  String?  @unique  // V3: nombre de jugador visible
+  password  String
+  role      Role     @default(USER)
+  avatar    String?
+
+  lists     List[]
+  friends   Friendship[] @relation("UserFriends")
+  friendOf  Friendship[] @relation("FriendOf")
+
+  // V3: partidas
+  roomsAsHost  GameRoom[] @relation("HostRooms")
+  roomsAsGuest GameRoom[] @relation("GuestRooms")
+  matchesWon   Match[]    @relation("WinnerMatches")
+  matchesLost  Match[]    @relation("LoserMatches")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// V3: Lista de amigos
+model Friendship {
+  id        String   @id @default(cuid())
+  userId    String
+  friendId  String
+  accepted  Boolean  @default(false)
+  user      User     @relation("UserFriends", fields: [userId], references: [id])
+  friend    User     @relation("FriendOf", fields: [friendId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, friendId])
+}
+
+// ============================================================
+// VERSIONADO DEL JUEGO
+// ============================================================
+
+// Permite tener múltiples "Sagas" o versiones de reglas.
+// Todas las unidades, items y misiones pertenecen a una versión.
+// Cuando se hace V3 y hay partidas en curso, las reglas no cambian.
+model GameVersion {
+  id          String          @id @default(cuid())
+  name        String          // "Set de Inicio", "Saga 1", "V2.0"
+  description String?
+  isActive    Boolean         @default(true)
+  releaseDate DateTime?
+
+  factions    FactionConfig[]
+  units       UnitBase[]
+  items       Item[]
+  missions    Mission[]
+
+  createdAt   DateTime        @default(now())
+
+  @@index([isActive])
+}
+
+// ============================================================
+// CONFIGURACIÓN DE FACCIONES
+// ============================================================
+
+// El Admin edita los modificadores de afinidad por facción y stat.
+// Modificador va de 0 a 3 (mayor afinidad = menor costo).
+model FactionConfig {
+  id          String      @id @default(cuid())
+  versionId   String
+  version     GameVersion @relation(fields: [versionId], references: [id])
+
+  // Identificador interno: 'tain', 'dein', 'bisk', 'evol'
+  factionKey  String
+  // Nombre visible: "Semillas de Táin"
+  factionName String
+  icon        String      // Emoji o ruta de imagen
+
+  // Stats base gratuitos que define la identidad de la facción
+  // Ej: { pa: 2, pe: 2, mov: 3, resfis: 3 }
+  identityStats Json
+
+  // Modificadores de afinidad por stat (0–3)
+  // Ej: { pa: 0, pe: 1, mov: 2, melee: 1, ... }
+  factionMods   Json
+
+  // Valores estándar de referencia para el balance
+  // Ej: { pa: 2, pe: 2, mov: 3, melee: 2, ... }
+  standardStats Json
+
+  // Colores del tema para esta facción
+  colorPrimary String?  // CSS color, ej: "#4CAF7D"
+
+  // Lore / descripción de cada stat desde la perspectiva de la facción
+  // Editables en admin para mostrar en el builder al jugador
+  statLore     Json?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([versionId, factionKey])
+  @@index([versionId])
+}
+
+// ============================================================
+// UNIDADES BASE (configuradas por ADMIN)
+// ============================================================
+
+// Una UnitBase es la "plantilla" de una unidad del juego.
+// Los jugadores no editan estas — crean instancias (ListUnit) con overrides.
+model UnitBase {
+  id          String      @id @default(cuid())
+  versionId   String
+  version     GameVersion @relation(fields: [versionId], references: [id])
+
+  name        String
+  faction     String      // 'tain' | 'dein' | 'bisk' | 'evol'
+  description String?
+
+  // Stats mínimos de la unidad (punto de partida del builder)
+  // Ej: { pa: 1, pe: 1, mov: 1, melee: 1, ... }
+  baseStats   Json
+
+  // Mejoras por defecto configuradas por el admin (pueden ser sobreescritas por jugador)
+  defaultMods Json?
+
+  // HP por localización [{ slotId, label, min, max, cPt, base }]
+  hpConfig    Json
+
+  // Tipo de arma por defecto
+  defaultWeapon String    @default("1m1m")
+
+  // ¿Puede equipar gema esta unidad?
+  canEquipGem   Boolean   @default(false)
+
+  // Habilidades y pasivas adjuntas a la unidad base
+  // [{ itemId, label, description, isPassive }]
+  abilities   Json?
+
+  // BP calculado (cacheado, se recalcula cuando el admin guarda)
+  calculatedBP Int        @default(0)
+
+  // Costo de ejército derivado del BP
+  armyCost    Int         @default(1)
+
+  isActive    Boolean     @default(true)
+  sortOrder   Int         @default(0)
+
+  listUnits   ListUnit[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([faction])
+  @@index([versionId])
+}
+
+// ============================================================
+// ITEMS — Armas, Pasivas, Spells, Equipos, Consumibles, etc.
+// ============================================================
+
+model Item {
+  id          String      @id @default(cuid())
+  versionId   String
+  version     GameVersion @relation(fields: [versionId], references: [id])
+
+  name        String
+  type        String
+  // 'raza' | 'pasiva' | 'habilidad' | 'spell' | 'consumible' | 'equipo' | 'arma' | 'artefacto'
+
+  description String?
+
+  // Costo en puntos de ejército (0 para razas)
+  costPts     Int         @default(0)
+
+  // Facciones que pueden usar este item (vacío = todas)
+  factions    String[]
+
+  // Raza requerida (si aplica)
+  raceId      String?
+
+  // Config de HP para razas (array de slots)
+  hpConfig    Json?
+
+  // Efectos mecánicos (para V3: el motor de juego los lee)
+  // { statBonus: { melee: +1 }, onAttack: "...", keywords: ["Veneno"] }
+  mechanics   Json?
+
+  isActive    Boolean     @default(true)
+
+  // Relación: items asignados a ListUnit en las listas de jugadores
+  assignedToUnits ListUnitItem[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([versionId, type])
+}
+
+// ============================================================
+// MISIONES
+// ============================================================
+
+model Mission {
+  id            String      @id @default(cuid())
+  versionId     String
+  version       GameVersion @relation(fields: [versionId], references: [id])
+
+  name          String
+  type          MissionType
+  victoryPoints Int
+
+  description   String      // Objetivo principal
+  rules         String?     // Restricciones o aclaraciones
+  flavorText    String?     // Texto de lore/ambiente
+
+  isActive      Boolean     @default(true)
+  sortOrder     Int         @default(0)
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([versionId, type])
+}
+
+// ============================================================
+// LISTAS DE EJÉRCITO (creadas por jugadores)
+// ============================================================
+
+model List {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+
+  // Puntos de ejército totales (calculados y cacheados)
+  totalPoints Int        @default(0)
+
+  // Facción principal de la lista
+  faction     String?
+
+  isPublic    Boolean    @default(false)
+
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relación MxN con unidades base, con overrides por instancia
+  units       ListUnit[]
+
+  // Partidas donde esta lista fue usada
+  wonMatches  Match[]    @relation("WinnerList")
+  lostMatches Match[]    @relation("LoserList")
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([userId])
+  @@index([isPublic])
+}
+
+// Instancia de una unidad dentro de una lista.
+// El jugador puede hacer "override" de los stats de la UnitBase.
+model ListUnit {
+  id         String   @id @default(cuid())
+  listId     String
+  list       List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  unitBaseId String
+  unitBase   UnitBase @relation(fields: [unitBaseId], references: [id])
+
+  // Stats sobreescritos por el jugador (delta sobre los baseStats)
+  customStats  Json
+
+  // Estado de gema y arma de esta instancia específica
+  puedeGema    Boolean @default(false)
+  gemaEnMano   Boolean @default(false)
+  weapon       String  @default("1m1m")
+
+  // BP y pts de esta instancia (cacheados)
+  buildCost    Int     @default(0)
+  armyCost     Int     @default(1)
+
+  // Items asignados a esta unidad en la lista
+  items        ListUnitItem[]
+
+  position     Int?    // Orden visual en la lista
+  displayName  String? // Nombre customizado por el jugador (opcional)
+
+  createdAt    DateTime @default(now())
+
+  @@index([listId])
+}
+
+// Tabla pivot: items equipados por una ListUnit
+model ListUnitItem {
+  id         String   @id @default(cuid())
+  listUnitId String
+  listUnit   ListUnit @relation(fields: [listUnitId], references: [id], onDelete: Cascade)
+  itemId     String
+  item       Item     @relation(fields: [itemId], references: [id])
+
+  @@index([listUnitId])
+}
+
+// ============================================================
+// PARTIDAS (Match) — V2 base, V3 completo
+// ============================================================
+
+model Match {
+  id            String    @id @default(cuid())
+
+  winnerUserId  String
+  loserUserId   String
+  winnerListId  String
+  loserListId   String
+
+  winnerUser    User      @relation("WinnerMatches", fields: [winnerUserId], references: [id])
+  loserUser     User      @relation("LoserMatches", fields: [loserUserId], references: [id])
+  winnerList    List      @relation("WinnerList", fields: [winnerListId], references: [id])
+  loserList     List      @relation("LoserList", fields: [loserListId], references: [id])
+
+  // V3: Replay de batalla (almacenado como JSON comprimido)
+  // Solo se guardan hasta 3 replays por usuario en el servidor
+  battleLog     Json?
+
+  playedAt      DateTime  @default(now())
+
+  // V3: Sala donde se jugó
+  gameRoomId    String?
+  gameRoom      GameRoom? @relation(fields: [gameRoomId], references: [id])
+
+  @@index([winnerUserId])
+  @@index([loserUserId])
+}
+
+// ============================================================
+// V3: SALAS DE JUEGO
+// ============================================================
+
+// Una GameRoom es una partida en tiempo real.
+// El motor de juego vive aquí en V3.
+model GameRoom {
+  id           String     @id @default(cuid())
+  code         String     @unique  // Código corto para invitar, ej: "ABC123"
+
+  hostId       String
+  guestId      String?
+
+  host         User       @relation("HostRooms", fields: [hostId], references: [id])
+  guest        User?      @relation("GuestRooms", fields: [guestId], references: [id])
+
+  status       RoomStatus @default(WAITING)
+
+  // Listas usadas (almacenadas como snapshot para no depender de cambios futuros)
+  hostListSnapshot  Json?
+  guestListSnapshot Json?
+
+  // Estado del juego (V3: posiciones de unidades, turno actual, etc.)
+  gameState    Json?
+
+  // Resultado
+  match        Match[]
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  finishedAt   DateTime?
+
+  @@index([status])
+  @@index([hostId])
+}
